@@ -59,7 +59,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(authEntryPoint).and()
 			.authorizeRequests()
 				.antMatchers("/api/auth/login/**").permitAll()
-				.antMatchers(HttpMethod.GET, "/api/test").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/test/**").permitAll()
 			.anyRequest().authenticated().and()
 			.addFilterBefore(authFilter, BasicAuthenticationFilter.class).httpBasic();
 	}

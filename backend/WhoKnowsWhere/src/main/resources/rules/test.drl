@@ -1,0 +1,12 @@
+package rules
+
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
+
+rule "Test destination"
+
+    when
+        $dest: Destination()
+    then
+        modify($dest) { setId(5L); }
+
+end
