@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Constants;
 
 @Controller
 @RequestMapping("api/test")
@@ -24,8 +25,10 @@ public class TestController {
 		System.out.println(test);
 		
 		
-		KieSession session = kieContainer.newKieSession("WKW");
-		Destination destination = new Destination(1L, test);
+		KieSession session = kieContainer.newKieSession(Constants.KIE_SESSION);
+		Destination destination = new Destination();
+		destination.setId(1L);
+		destination.setName(test);
 		session.insert(destination);
 		session.fireAllRules();
 		session.dispose();

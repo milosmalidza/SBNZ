@@ -1,0 +1,39 @@
+
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
+
+rule "Set expense linearly with distance when traveling with Car"
+
+	when 
+		$expense: ExpenseDTO(travelMethod == TravelMethod.CAR)
+	then
+		modify($expense) {
+			setEstimatedPrice($expense.getEstimatedPrice() + $expense.getDistance() * 0.3),
+			setEstimatedTime($expense.getDistance() * 0.55);
+		}
+	
+end
+
+rule "Set expense linearly with distance when traveling with Bus"
+
+	when 
+		$expense: ExpenseDTO(travelMethod == TravelMethod.BUS)
+	then
+		modify($expense) {
+			setEstimatedPrice($expense.getEstimatedPrice() + $expense.getDistance() * 0.4),
+			setEstimatedTime($expense.getDistance() * 0.85);
+		}
+	
+end
+
+rule "Set expense linearly with distance when traveling with Plane"
+
+	when 
+		$expense: ExpenseDTO(travelMethod == TravelMethod.PLANE)
+	then
+		modify($expense) {
+			setEstimatedPrice($expense.getEstimatedPrice() + $expense.getDistance() * 0.55),
+			setEstimatedTime($expense.getDistance() * 0.15);
+		}
+	
+end
