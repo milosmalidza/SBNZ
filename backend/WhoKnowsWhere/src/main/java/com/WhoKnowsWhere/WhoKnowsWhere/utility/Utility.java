@@ -7,6 +7,9 @@ import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
 
 public class Utility {
 	
+	public static final String GEOCODE_API_KEY = "5cb8bfab486049d0b3656f556ea278f4";
+	public static final String GEOCODE_API = "https://api.opencagedata.com/geocode/v1/json?q=%s+%s&key=%s&no_annotations=1";
+	
 	/**
 	 * Returns distance in km between two geo coordinates
 	 */
