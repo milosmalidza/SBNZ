@@ -16,8 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class LocationService {
 	
-	
-	
 	@Autowired
 	private LocationRepository locationRep;
 	
