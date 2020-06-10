@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsResponseDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
@@ -52,8 +51,15 @@ public class DestinationService {
 		List<RecommendationDTO> recommendations = new ArrayList<>();
 		for (Destination dest : destinations) {
 			RecommendationDTO r = new RecommendationDTO(dest);
+			ExpenseDTO expense = new ExpenseDTO();
+			expense.setDistance(Utility.getDistance(user.getLocation(), dest.getLocation()));
+			expense.setTravelMethod(rrDto.getTravelMethod());
+			
+			r.setExpense(expense);
+			
 			recommendations.add(r);
 			session.insert(r);
+			session.insert(expense);
 		}
 		
 		session.fireAllRules();

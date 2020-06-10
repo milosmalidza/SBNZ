@@ -15,6 +15,7 @@ import lombok.Setter;
 public class RecommendationsRequestDTO {
 	private TravelMethod travelMethod;
 	private int recommendedPrice;
-	private int recommendedDistance;
+	private int maxDistance;
+	private int minDistance;
 	private PointOfInterestSortingOrder poiso;
 }

@@ -1,0 +1,109 @@
+import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsResponseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.DestinationType;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
+
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Utility;
+
+
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
+
+
+rule "Increase recommendation rank destination type: Urban, 16 < age < 25"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.URBAN) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
+	then
+		System.out.println("Increased rank by 8 when 16 < age < 25 for Urban");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 8);
+		}
+	
+end
+
+rule "Increase recommendation rank destination type: Adventure, 16 < age < 25"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
+	then
+		System.out.println("Increased rank by 10 when 16 < age < 25 for Adventure");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 10);
+		}
+	
+end
+
+
+
+rule "Increase recommendation rank destination type: Adventure, 25 < age < 45"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
+	then
+		System.out.println("Increased rank by 6 when 25 < age < 45 for Adventure");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 6);
+		}
+	
+end
+
+rule "Increase recommendation rank destination type: Relaxation, 25 < age < 45"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.RELAXATION) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
+	then
+		System.out.println("Increased rank by 10 when 25 < age < 45 for Relaxation");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 10);
+		}
+	
+end
+
+rule "Increase recommendation rank destination type: Urban, 25 < age < 45"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.URBAN) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
+	then
+		System.out.println("Increased rank by 8 when 25 < age < 45 for Urban");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 8);
+		}
+	
+end
+
+rule "Increase recommendation rank destination type: Relaxation, age > 45"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($dest: destination)
+		DestinationDTO(type == DestinationType.RELAXATION) from $dest
+		$user: RegisteredUser(Utility.getYears(birthDate) > 45)
+	then
+		System.out.println("Increased rank by 8 when age > 45 for Relaxation");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 15);
+		}
+	
+end
+

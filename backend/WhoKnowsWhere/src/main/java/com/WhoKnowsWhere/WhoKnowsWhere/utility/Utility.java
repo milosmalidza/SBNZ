@@ -1,5 +1,8 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.utility;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
 
 public class Utility {
@@ -20,6 +23,15 @@ public class Utility {
 		retval = 2 * Math.atan2(Math.sqrt(retval), Math.sqrt(1-retval));
 		
 		return earthRadius * retval;
+	}
+	
+	/**
+	 * Returns difference between two dates in years
+	 */
+	public static long getYears(Date date) {
+		long diffInMillies = Math.abs(new Date().getTime() - date.getTime());
+	    long diff = (long) (TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 365.25);
+	    return diff;
 	}
 	
 }

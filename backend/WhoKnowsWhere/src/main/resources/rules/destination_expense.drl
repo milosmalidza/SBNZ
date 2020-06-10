@@ -3,7 +3,8 @@ import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
 
 rule "Set expense linearly with distance when traveling with Car"
-
+	no-loop
+	lock-on-active true
 	when 
 		$expense: ExpenseDTO(travelMethod == TravelMethod.CAR)
 	then
@@ -15,7 +16,8 @@ rule "Set expense linearly with distance when traveling with Car"
 end
 
 rule "Set expense linearly with distance when traveling with Bus"
-
+	no-loop
+	lock-on-active true
 	when 
 		$expense: ExpenseDTO(travelMethod == TravelMethod.BUS)
 	then
@@ -27,7 +29,8 @@ rule "Set expense linearly with distance when traveling with Bus"
 end
 
 rule "Set expense linearly with distance when traveling with Plane"
-
+	no-loop
+	lock-on-active true
 	when 
 		$expense: ExpenseDTO(travelMethod == TravelMethod.PLANE)
 	then

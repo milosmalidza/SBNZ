@@ -1,0 +1,25 @@
+import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsResponseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.DestinationType;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
+
+
+rule "Increase recommendation rank destination by distance"
+	no-loop
+	lock-on-active true
+	when 
+		$recommendation: RecommendationDTO($expense: expense)
+		ExpenseDTO(distance < recommendationsRequestDTO.getMaxDistance() && distance > recommendationsRequestDTO.getMinDistance()) from $expense
+	then
+		System.out.println("Increased rank by 30 with distance");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 30);
+		}
+end
