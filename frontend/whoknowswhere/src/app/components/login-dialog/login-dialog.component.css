@@ -1,0 +1,50 @@
+.login-dialog-component {
+    position: fixed;
+    top: 0;
+    right: 0px;
+    font-size: 16px;
+    width: 450px;
+    background: #f5f5f5;
+    height: 100vh;
+    box-shadow: 0px 0px 60px 0px rgba(0, 0, 0, 0.25);
+    z-index: 999998;
+    transition: .4s;
+    overflow-y: auto;
+}
+
+.login-dialog-component.activated {
+    right: 0;
+}
+
+.login-dialog-component .separator > div {
+    width: 100px;
+    height: 2px;
+    background: rgb(161, 161, 161);
+}
+
+.login-dialog-header {
+    font-size: 28px;
+    padding: 25px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.login-button {
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: rgb(223, 223, 223);
+    text-align: center; 
+    cursor: pointer;
+    transition: .3s;
+}
+
+.login-item {
+    font-size: 13px;
+    text-align: justify;
+}
+
+.login-button:hover {
+    background: rgb(214, 214, 214);
+}
+
+
