@@ -1,7 +1,18 @@
+<div class="main-navigation-bar" [ngClass]="{'transparent-bar' : getUrl() === 'home' || getUrl() === ''}">
+    <ul class="options-1">
+        <li (click)="goHome()" *ngIf="getUrl() !== 'home'">Home</li>
+        <li (click)="explore()" *ngIf="getUrl() === 'home' || getUrl() === ''">Explore</li>
+        <li (click)="openDialog()">Login</li>
+        <li>Register</li>
+        
+    </ul>
+</div>
+
 
 <router-outlet></router-outlet>
 
 
 
-
+<div (click)="closeLoginDialog()" class="teaser" [ngClass]="{'activated': loginTeaserActivated}"></div>
 <div app-login-dialog></div>
+

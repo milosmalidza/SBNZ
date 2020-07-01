@@ -34,7 +34,7 @@ body {
 .input-holder {
     background: #e7e7e7;
     color: black;
-    height: 90px;
+    height: 80px;
     transition: .3s background;
 }
 
@@ -116,4 +116,15 @@ body {
 .form-holder {
     padding: 0 !important;
     margin: 0 !important;
+}
+
+.marker {
+    position: absolute;
+    background: url('/assets/mapbox-icon.png');
+    background-size: cover;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    z-index: 99;
+    cursor: pointer;
 }

@@ -1,3 +1,18 @@
+<div class="earth-holder" [ngClass]="{'leaving' : homeService.isLeaving, 'entering' : entering}">
+    <div class="main-content d-flex align-items-center justify-content-center">
+        <div class="row main-text-holder">
+            <div class="main-button col-12" (click)="explore()">EXPLORE</div>
+            <div class="main-text col-12">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec maximus, erat at eleifend finibus,
+                dui ligula eleifend purus, a viverra nisi leo non felis. Vestibulum vel vehicula lorem. Vivamus sit amet sapien id arcu placerat laoreet.
+                 Sed malesuada enim augue, eget pretium nisi tincidunt id. Mauris lorem diam, pharetra quis enim id, pellentesque congue nisi. Duis vitae neque dolor.
+                Quisque rutrum, mi quis efficitur pharetra, enim lacus ornare sem, ac commodo ex risus at magna. Mauris et aliquam lectus.</div><br>
+           
+        </div>
+        
+    </div>
+    <div class="earth-teaser"></div>
+    <div app-earth></div>
+</div>
 
 
 

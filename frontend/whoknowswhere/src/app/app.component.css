@@ -1,0 +1,64 @@
+.main-navigation-bar {
+    position: fixed;
+    height: 80px;
+    width: 100%;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: white;
+    color: black;
+    z-index: 999;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.3);
+    transition: .3s;
+}
+
+.main-navigation-bar.transparent-bar {
+    background: transparent;
+    color: white;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.0);
+}
+
+.main-navigation-bar > .options-1 {
+    position: absolute;
+    top: 50%;
+    right: 30px;
+    list-style-type: none;
+    transform: translateY(-50%);
+    transition: .3s;
+}
+
+.main-navigation-bar > .options-1 > li {
+    font-weight: 700;
+    float: left;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-right: 8px;
+    margin-left: 8px;
+    transition: .3s;
+}
+
+.main-navigation-bar > .options-1 li:hover {
+    color: black;
+    background: rgb(218, 218, 218);
+}
+
+.main-navigation-bar.transparent-bar > .options-1 li:hover {
+    color: black;
+    background: rgb(238, 238, 238);
+}
+
+.teaser {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 99999;
+}
+
+.teaser.activated {
+    display: block;
+}
+

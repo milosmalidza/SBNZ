@@ -1,8 +1,6 @@
 <div class="login-dialog-component" [ngClass]="{'activated' : activated}">
-    <div class="login-dialog-header">Login</div>
-
-    <div class="separator pl-4">
-        <div></div>
+    <div class="header-holder">
+        <div class="login-dialog-header">Login</div>
     </div>
 
     <div class="login-item p-4">
@@ -15,7 +13,32 @@
     <form name="loginForm" #ncf="ngForm">
         <div class="p-4">
             <div class="form-holder row">
-                
+
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(username), 
+                    focused : isFocused(username) || 
+                    !isEmpty(username)}">
+                    <p class="input-text-value">Username:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, username)" 
+                    (focus)="focusInput($event, username)"
+                        [(ngModel)]="loginDTO.username" name="username"
+                        #username="ngModel" data-index="0">
+                </div>
+
+                <div class="col-12 p-1"></div>
+
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(password), 
+                    focused : isFocused(password) || 
+                    !isEmpty(password)}">
+                    <p class="input-text-value">Password:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, password)" 
+                    (focus)="focusInput($event, password)"
+                        [(ngModel)]="loginDTO.password" name="password"
+                        #password="ngModel" data-index="1">
+                </div>
 
                 <div class="col-12 p-1"></div>
 
