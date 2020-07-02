@@ -2,5 +2,75 @@
     <div class="map-holder col-12 col-md-7">
         <div class="map" id="map" class="match-parent"></div>
     </div>
-    <div class="explore-holder col-12 col-md-5"></div>
+    <div class="explore-holder col-12 col-md-5">
+        <div class="row col-12 p-4 main-search-fields-holder">
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(maxDistance), 
+                    focused : isFocused(maxDistance) || 
+                    !isEmpty(maxDistance)}">
+                    <p class="input-text-value">Maximum Distance (km):</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, maxDistance)" 
+                    (focus)="focusInput($event, maxDistance)"
+                        [(ngModel)]="searchDTO.maxDistance" name="maxDistance"
+                        #maxDistance="ngModel" data-index="0">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(desireableExpense), 
+                    focused : isFocused(desireableExpense) || 
+                    !isEmpty(desireableExpense)}">
+                    <p class="input-text-value">Desireable Expense ($):</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, desireableExpense)" 
+                    (focus)="focusInput($event, desireableExpense)"
+                        [(ngModel)]="searchDTO.desireableExpense" name="desireableExpense"
+                        #desireableExpense="ngModel" data-index="1">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(poiDistance), 
+                    focused : isFocused(poiDistance) || 
+                    !isEmpty(poiDistance)}">
+                    <p class="input-text-value">POI Distance (km):</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, poiDistance)" 
+                    (focus)="focusInput($event, poiDistance)"
+                        [(ngModel)]="searchDTO.poiDistance" name="poiDistance"
+                        #poiDistance="ngModel" data-index="2">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="select-holder col-12"
+                    [ngClass]="{blurred : !selects.travelMethod.focused, 
+                    focused : selects.travelMethod.focused || 
+                    selects.travelMethod.value !== null}">
+
+                    <p class="input-text-value">Travel method:</p>
+                    <ng-select class="custom"
+                        (blur)="blurSelect($event, selects.travelMethod)" 
+                        (focus)="focusSelect($event, selects.travelMethod)"
+                        [(ngModel)]="selects.travelMethod.value" name="travelMethod"
+                        #travelMethod="ngModel"
+                        [searchable]="true"
+                        [clearable]="true"
+                        [items]="selects.travelMethod.items">
+                    </ng-select>
+                </div>
+            </div>
+
+            <div class="col-12 search-field-holder">
+                <div class="col-12 separator"></div>
+            </div>
+
+            <div class="col-12 col-md-6 search-field-holder"></div>
+
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="col-12 search-button">Search</div>
+            </div>
+        </div>
+    </div>
 </div>

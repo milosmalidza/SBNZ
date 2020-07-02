@@ -1,5 +1,6 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.controller;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.geocode.GeocodeResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,11 @@ public class LocationController {
 	@PostMapping("/create")
 	public ResponseEntity<String> createLocation(@RequestBody LocationDTO dto) {
 		return new ResponseEntity<String>(locationService.createLocation(dto), HttpStatus.OK);
+	}
+
+	@PostMapping("/retreive-info")
+	public ResponseEntity<GeocodeResult> retreiveLocationInfo(@RequestBody LocationDTO dto) {
+		return new ResponseEntity<GeocodeResult>(locationService.retreiveLocationInfo(dto), HttpStatus.OK);
 	}
 	
 }

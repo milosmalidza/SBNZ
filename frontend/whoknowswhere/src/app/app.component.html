@@ -3,7 +3,7 @@
         <li (click)="goHome()" *ngIf="getUrl() !== 'home'">Home</li>
         <li (click)="explore()" *ngIf="getUrl() === 'home' || getUrl() === ''">Explore</li>
         <li (click)="openDialog()">Login</li>
-        <li>Register</li>
+        <li (click)="openRegisterDialog()">Register</li>
         
     </ul>
 </div>
@@ -14,5 +14,7 @@
 
 
 <div (click)="closeLoginDialog()" class="teaser" [ngClass]="{'activated': loginTeaserActivated}"></div>
+<div (click)="closeRegisterDialog()" class="teaser" [ngClass]="{'activated': registerTeaserActivated}"></div>
 <div app-login-dialog></div>
+<div app-register-dialog></div>
 

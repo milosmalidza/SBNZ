@@ -1,0 +1,110 @@
+<div class="register-dialog-component" [ngClass]="{'activated' : activated}">
+    <div class="header-holder">
+        <div class="register-dialog-header">Register</div>
+    </div>
+
+    <div class="register-item p-4">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer fermentum feugiat mauris ac consectetur. Etiam egestas, erat nec consectetur semper, 
+        quam massa lacinia mi,
+         in iaculis tortor lorem ac libero. Nam dignissim erat id tortor vulputate, 
+         in mattis neque mollis. Donec posuere convallis risus, at sollicitudin dolor ornare a.
+    </div>
+
+    <form name="loginForm" #ncf="ngForm">
+        <div class="p-4">
+            <div class="form-holder row">
+
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(username), 
+                    focused : isFocused(username) || 
+                    !isEmpty(username)}">
+                    <p class="input-text-value">Email:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, username)" 
+                    (focus)="focusInput($event, username)"
+                        [(ngModel)]="registerDTO.username" name="username"
+                        #username="ngModel" data-index="0">
+                </div>
+
+                <div class="col-12 p-1"></div>
+
+                <div class="input-holder d-flex align-items-center col-6" 
+                    [ngClass]="{blurred : isBlurred(password), 
+                    focused : isFocused(password) || 
+                    !isEmpty(password)}">
+                    <p class="input-text-value">Password:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, password)" 
+                    (focus)="focusInput($event, password)"
+                        [(ngModel)]="registerDTO.password" name="password"
+                        #password="ngModel" data-index="1">
+                </div>
+
+                <div class="input-holder d-flex align-items-center col-6" 
+                    [ngClass]="{blurred : isBlurred(confirmPassword), 
+                    focused : isFocused(confirmPassword) || 
+                    !isEmpty(confirmPassword)}">
+                    <p class="input-text-value">Confirm password:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, confirmPassword)" 
+                    (focus)="focusInput($event, confirmPassword)"
+                        [(ngModel)]="registerDTO.confirmPassword" name="confirmPassword"
+                        #confirmPassword="ngModel" data-index="2">
+                </div>
+
+                <div class="col-12 p-1"></div>
+
+                <div class="select-holder col-12"
+                    [ngClass]="{blurred : !selects.status.focused, 
+                    focused : selects.status.focused || 
+                    selects.status.value !== null}">
+
+                    <p class="input-text-value">User Status:</p>
+                    <ng-select class="custom"
+                        (blur)="blurSelect($event, selects.status)" 
+                        (focus)="focusSelect($event, selects.status)"
+                        [(ngModel)]="selects.status.value" name="status"
+                        #status="ngModel"
+                        [searchable]="true"
+                        [clearable]="true"
+                        [items]="selects.status.items">
+                    </ng-select>
+                </div>
+
+                <div class="col-12 p-1"></div>
+
+                <div class="select-holder col-12"
+                    [ngClass]="{blurred : !selects.motivation.focused, 
+                    focused : selects.motivation.focused || 
+                    selects.motivation.value !== null}">
+
+                    <p class="input-text-value">Motivation:</p>
+                    <ng-select class="custom"
+                        (blur)="blurSelect($event, selects.motivation)" 
+                        (focus)="focusSelect($event, selects.motivation)"
+                        [(ngModel)]="selects.motivation.value" name="motivation"
+                        #motivation="ngModel"
+                        [searchable]="true"
+                        [clearable]="true"
+                        [items]="selects.motivation.items">
+                    </ng-select>
+                </div>
+
+                <div class="col-12 p-1"></div>
+                <div class="col-12 info-text">Please choose a place where you live</div>
+                <div class="col-12 register-map-holder" style="height: 400px;">
+                    <div class="map" id="register-map" class="match-parent"></div>
+                </div>
+                
+
+                <div class="col-12 p-1"></div>
+
+                <div class="col-12 p-3 register-button">
+                    Register
+                </div>
+
+            </div>
+        </div>
+    </form>
+
+</div>

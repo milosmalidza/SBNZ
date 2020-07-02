@@ -57,9 +57,9 @@ export class LoginDialogComponent implements OnInit, OnDestroy {
 
   isEmpty(el: any) {
     let index = el.valueAccessor._elementRef.nativeElement.dataset.index;
-    let element = (<HTMLInputElement>document.querySelector('.input-holder .input-styled[data-index="'+ index +'"]'));
+    let element = (<HTMLInputElement>document.querySelector('.login-dialog-component .input-holder .input-styled[data-index="'+ index +'"]'));
     if (!element) {
-      element = (<HTMLInputElement>document.querySelector('.input-holder .custom[data-index="'+ index +'"]'));
+      element = (<HTMLInputElement>document.querySelector('.login-dialog-component .input-holder .custom[data-index="'+ index +'"]'));
     }
     return element.value == '';
   }

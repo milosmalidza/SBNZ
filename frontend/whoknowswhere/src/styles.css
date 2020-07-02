@@ -118,6 +118,8 @@ body {
     margin: 0 !important;
 }
 
+
+
 .marker {
     position: absolute;
     background: url('/assets/mapbox-icon.png');
@@ -128,3 +130,138 @@ body {
     z-index: 99;
     cursor: pointer;
 }
+
+
+.ng-select.custom {
+    outline: none !important;
+    height: 80px;
+    width: 100%;
+    padding: 0px 20px;
+}
+
+.ng-select.custom .ng-value {
+    font-weight: 700;
+}
+
+.ng-select.custom .ng-select-container {
+    background: transparent;
+    border: none;
+    outline: none !important;
+    height: 80px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.ng-select.custom .ng-input {
+    outline: none !important;
+}
+
+.ng-select.custom .ng-input > input {
+    height: 77px;
+    color: black;
+    font-family: OpenSans;
+    font-weight: 700;
+    font-size: 13px;
+    outline: none !important;
+}
+
+.ng-select.custom .ng-value-container {
+    outline: none !important;
+}
+
+.ng-select.custom .ng-placeholder {
+    outline: none !important;
+}
+
+.ng-select.custom .ng-value-label {
+    color: black;
+}
+
+.ng-select.custom .ng-option {
+    font-size: 13px;
+    padding: 20px !important;
+    background: #dfdfdf;
+    color: black;
+}
+
+.ng-select.custom .ng-dropdown-panel-items {
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
+}
+
+.ng-select.custom .ng-dropdown-panel {
+    left: 0;
+    top: 80px;
+}
+
+.ng-select.custom .ng-option.ng-option-marked {
+    background: #d6d6d6;
+}
+
+.ng-select.custom .ng-option.ng-option-marked.ng-option-selected {
+    color: black;
+}
+
+.ng-select.custom .ng-dropdown-panel {
+    border: none !important;
+    border-radius: none !important;
+}
+
+.ng-select.custom .ng-value {
+    display: flex;
+    align-items: center;
+    outline: none !important;
+    font-size: 13px;
+}
+
+.ng-select.custom .ng-clear-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.select-holder {
+    background: #e7e7e7;
+    color: black;
+    height: 80px;
+    transition: .3s background;
+    padding: 0 !important;
+}
+
+.select-holder.disabled {
+    background: #dfdfdf;
+    opacity: .95;
+}
+
+.select-holder.disabled:hover {
+    background: #dfdfdf;
+    opacity: .95;
+}
+
+.select-holder.focused {
+    background: #dfdfdf;
+}
+
+.select-holder:hover {
+    background: #dfdfdf;
+}
+
+.select-holder.blurred .input-text-value{
+    top: 50%;
+    font-size: 14px;
+}
+
+.select-holder.focused .input-text-value{
+    top: 18px;
+    font-size: 12px;
+    color: rgb(21, 109, 94);
+}
+
+.select-holder small {
+    position: absolute;
+    left: 20px;
+    top: calc(50% + 28px);
+    transform: translateY(-50%);
+    color: red;
+    font-size: 13px;
+}
+
+

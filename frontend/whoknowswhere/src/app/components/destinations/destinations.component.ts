@@ -10,12 +10,34 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class DestinationsComponent implements OnInit, OnDestroy {
 
+  public searchDTO: any = {};
+
   map: mapboxgl.Map;
-  style = 'mapbox://styles/mapbox/streets-v11';
-  lat = 37.75;
-  lng = -122.41;
+  style = 'mapbox://styles/malidzo/ckc3v25ez03xg1ipjk4f34zl8';
+  lat = 45.253130;
+  lng = 19.809195;
+  public activeInput = -1;
 
   public entering: boolean = true;
+
+  public selects = {
+    travelMethod: {
+      value: null,
+      items: [{
+        value: 'CAR',
+        label: 'Car'
+      },
+      {
+        value: 'PLANE',
+        label: 'Plane'
+      },
+      {
+        value: 'BUS',
+        label: 'Bus'
+      }],
+      focused: false
+    }
+  };
 
   constructor(public homeService: HomeService,
               private cdRef: ChangeDetectorRef) { }
@@ -50,6 +72,70 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.entering = false;
     this.cdRef.detectChanges();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  focusInput(event: FocusEvent, element) {
+    let index = element.valueAccessor._elementRef.nativeElement.dataset.index;
+    this.activeInput = index;
+  }
+
+  blurInput(event: FocusEvent, element) {
+    let index = element.valueAccessor._elementRef.nativeElement.dataset.index;
+    if (event.relatedTarget) {
+      
+      let relTarget = <HTMLElement>event.relatedTarget;
+      if (relTarget.classList.contains('dl-abdtp-date-button') ||
+      relTarget.classList.contains('dl-abdtp-right-button') ||
+      relTarget.classList.contains('dl-abdtp-left-button')) {
+        (<HTMLInputElement>event.target).focus();
+        return;
+      } 
+    }
+    
+    if (this.activeInput == index || this.isEmpty(index)) {
+      this.activeInput = -1;
+    }
+  }
+
+  isEmpty(el: any) {
+    let index = el.valueAccessor._elementRef.nativeElement.dataset.index;
+    let element = (<HTMLInputElement>document.querySelector('.destinations-main-holder .input-holder .input-styled[data-index="'+ index +'"]'));
+    if (!element) {
+      element = (<HTMLInputElement>document.querySelector('.destinations-main-holder .input-holder .custom[data-index="'+ index +'"]'));
+    }
+    return element.value == '';
+  }
+
+
+  isBlurred(element: any) {
+    return this.activeInput != element.valueAccessor._elementRef.nativeElement.dataset.index;
+  }
+
+  isFocused(element: any) {
+    return this.activeInput == element.valueAccessor._elementRef.nativeElement.dataset.index;
+  }
+
+  focusSelect(event, obj) {
+    obj.focused = true;
+  }
+
+  blurSelect(event, obj) {
+    obj.focused = false;
   }
 
 }

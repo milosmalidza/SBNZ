@@ -3,6 +3,7 @@ import { LoginDialogService } from './services/login-dialog.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HomeService } from './services/home.service';
+import { RegisterDialogService } from './services/register-dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -12,14 +13,17 @@ import { HomeService } from './services/home.service';
 export class AppComponent {
 
   constructor(public loginDialogService: LoginDialogService,
+              public registerDialogService: RegisterDialogService,
               public router: Router,
               public homeService: HomeService) {}
 
   private subscription: Subscription;
+  private registerSubscription: Subscription;
 
   title = 'whoknowswhere';
 
   public loginTeaserActivated: boolean = false;
+  public registerTeaserActivated: boolean = false;
 
   ngOnInit() {
     this.subscription = this.loginDialogService.receiveData().subscribe(
@@ -27,10 +31,18 @@ export class AppComponent {
         this.loginTeaserActivated = data.isOpened;
       }
     );
+
+    this.registerSubscription = this.registerDialogService.receiveData().subscribe(
+      data => {
+        this.registerTeaserActivated = data.isOpened;
+      }
+    )
+
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.registerSubscription.unsubscribe();
     this.homeService.isLeaving = false;
     this.homeService.goingHome = false;
   }
@@ -66,8 +78,23 @@ export class AppComponent {
     );
   }
 
+  openRegisterDialog(): void {
+    console.log('dsa');
+    this.registerDialogService.sendData(
+      {
+        isOpened: true
+      }
+    );
+  }
+
   closeLoginDialog(): void {
     this.loginDialogService.sendData({
+      isOpened: false
+    });
+  }
+
+  closeRegisterDialog(): void {
+    this.registerDialogService.sendData({
       isOpened: false
     });
   }

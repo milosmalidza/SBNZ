@@ -8,6 +8,9 @@ import { LoginDialogComponent } from './components/login-dialog/login-dialog.com
 import { EarthComponent } from './components/earth/earth.component';
 import { DestinationsComponent } from './components/destinations/destinations.component';
 import { AgmCoreModule } from '@agm/core';
+import { RegisterDialogComponent } from './components/register-dialog/register-dialog.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -15,12 +18,15 @@ import { AgmCoreModule } from '@agm/core';
     HomeComponent,
     LoginDialogComponent,
     EarthComponent,
-    DestinationsComponent
+    DestinationsComponent,
+    RegisterDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    NgSelectModule,
+    HttpClientModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyABNvl4H4aM9ToVwM9ogm4qedE8Zq4QOuU'
     })
