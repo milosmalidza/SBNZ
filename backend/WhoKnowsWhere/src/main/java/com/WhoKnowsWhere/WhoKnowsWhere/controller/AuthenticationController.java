@@ -12,6 +12,8 @@ import com.WhoKnowsWhere.WhoKnowsWhere.dto.LoginRequestDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.UserDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.service.AuthenticationService;
 
+import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/api/auth")
@@ -24,4 +26,11 @@ public class AuthenticationController {
 		return new ResponseEntity<>(authService.login(loginRequest.getEmail(), loginRequest.getPassword()),
 				HttpStatus.OK);
 	}
+
+	@PostMapping("/register")
+	public ResponseEntity<UserDTO> register(@Valid @RequestBody UserDTO userDTO) {
+		return new ResponseEntity<>(authService.register(userDTO), HttpStatus.OK);
+	}
+
+
 }

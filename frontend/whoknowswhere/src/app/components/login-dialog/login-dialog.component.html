@@ -10,7 +10,7 @@
          in mattis neque mollis. Donec posuere convallis risus, at sollicitudin dolor ornare a.
     </div>
 
-    <form name="loginForm" #ncf="ngForm">
+    <form name="loginForm" #ncf="ngForm" (ngSubmit)="login()">
         <div class="p-4">
             <div class="form-holder row">
 
@@ -22,7 +22,7 @@
                     <input type="text" class="input-styled" autocomplete="off"
                     (blur)="blurInput($event, username)" 
                     (focus)="focusInput($event, username)"
-                        [(ngModel)]="loginDTO.username" name="username"
+                        [(ngModel)]="loginDTO.username" name="email"
                         #username="ngModel" data-index="0">
                 </div>
 
@@ -42,7 +42,7 @@
 
                 <div class="col-12 p-1"></div>
 
-                <div class="col-12 p-3 login-button">
+                <div class="col-12 p-3 login-button" (click)="login()">
                     Login
                 </div>
             </div>

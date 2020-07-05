@@ -6,6 +6,19 @@
         <div class="row col-12 p-4 main-search-fields-holder">
             <div class="col-12 col-md-6 search-field-holder">
                 <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(minDistance), 
+                    focused : isFocused(minDistance) || 
+                    !isEmpty(minDistance)}">
+                    <p class="input-text-value">Minimum Distance (km):</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, minDistance)" 
+                    (focus)="focusInput($event, minDistance)"
+                        [(ngModel)]="searchDTO.minDistance" name="minDistance"
+                        #minDistance="ngModel" data-index="0">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 search-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
                     [ngClass]="{blurred : isBlurred(maxDistance), 
                     focused : isFocused(maxDistance) || 
                     !isEmpty(maxDistance)}">
@@ -14,7 +27,7 @@
                     (blur)="blurInput($event, maxDistance)" 
                     (focus)="focusInput($event, maxDistance)"
                         [(ngModel)]="searchDTO.maxDistance" name="maxDistance"
-                        #maxDistance="ngModel" data-index="0">
+                        #maxDistance="ngModel" data-index="1">
                 </div>
             </div>
             <div class="col-12 col-md-6 search-field-holder">
@@ -27,7 +40,7 @@
                     (blur)="blurInput($event, desireableExpense)" 
                     (focus)="focusInput($event, desireableExpense)"
                         [(ngModel)]="searchDTO.desireableExpense" name="desireableExpense"
-                        #desireableExpense="ngModel" data-index="1">
+                        #desireableExpense="ngModel" data-index="2">
                 </div>
             </div>
             <div class="col-12 col-md-6 search-field-holder">
@@ -40,7 +53,7 @@
                     (blur)="blurInput($event, poiDistance)" 
                     (focus)="focusInput($event, poiDistance)"
                         [(ngModel)]="searchDTO.poiDistance" name="poiDistance"
-                        #poiDistance="ngModel" data-index="2">
+                        #poiDistance="ngModel" data-index="3">
                 </div>
             </div>
             <div class="col-12 col-md-6 search-field-holder">
@@ -69,8 +82,22 @@
             <div class="col-12 col-md-6 search-field-holder"></div>
 
             <div class="col-12 col-md-6 search-field-holder">
-                <div class="col-12 search-button">Search</div>
+                <div class="col-12 search-button" (click)="search()">Search</div>
             </div>
+        </div>
+        <div class="col-12 result-holder">
+            <table class="main-results">
+                <tr>
+                    <td>Rank</td>
+                    <td>Name</td>
+                    <td>Type</td>
+                </tr>
+                <tr *ngFor="let item of result; let i = index">
+                    <td>{{i + 1}}</td>
+                    <td>{{item.destination.name}}</td>
+                    <td>{{item.destination.type}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

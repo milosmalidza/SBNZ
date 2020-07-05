@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { LoginDialogService } from 'src/app/services/login-dialog.service';
 import { Subscription } from 'rxjs';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { error } from 'protractor';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'div [app-login-dialog]',
@@ -9,7 +12,8 @@ import { Subscription } from 'rxjs';
 })
 export class LoginDialogComponent implements OnInit, OnDestroy {
 
-  constructor(public loginDialogService: LoginDialogService) { }
+  constructor(public loginDialogService: LoginDialogService,
+              public authenticationService: AuthenticationService) { }
   
   private subscription: Subscription;
 
@@ -18,7 +22,7 @@ export class LoginDialogComponent implements OnInit, OnDestroy {
 
   public loginDTO: any = {};
 
-  @ViewChild("ncf", {static: false}) newCertificateForm: any;
+  @ViewChild("ncf", {static: false}) newCertificateForm: NgForm;
 
   ngOnInit(): void {
     this.subscription = this.loginDialogService.receiveData().subscribe(
@@ -31,6 +35,26 @@ export class LoginDialogComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  login(): void {
+    console.log(this.loginDTO);
+    this.authenticationService.loginRequest(this.loginDTO).subscribe(
+      data => {
+        this.authenticationService.login(JSON.stringify(data));
+        this.newCertificateForm.resetForm();
+        this.loginDialogService.sendData({
+          isOpened: false,
+          login: true
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    )
+  }
+
+
+
 
   focusInput(event: FocusEvent, element) {
     let index = element.valueAccessor._elementRef.nativeElement.dataset.index;

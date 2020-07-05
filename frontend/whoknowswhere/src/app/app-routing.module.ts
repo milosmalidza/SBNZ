@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { DestinationsComponent } from './components/destinations/destinations.component';
+import { RoleGuard } from './guards/role.guard';
+import { environment } from 'src/environments/environment';
 
 
 const routes: Routes = [
@@ -16,7 +18,9 @@ const routes: Routes = [
   },
   {
     path : 'destinations',
-    component : DestinationsComponent
+    component : DestinationsComponent,
+    canActivate: [RoleGuard],
+    data: {permissions: [environment.roles.REGISTERED_USER]}
   },
 ];
 

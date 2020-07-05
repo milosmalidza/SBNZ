@@ -2,6 +2,8 @@ import { environment } from '../../../environments/environment';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { HomeService } from 'src/app/services/home.service';
 import * as mapboxgl from 'mapbox-gl';
+import { DestinationService } from 'src/app/services/destination.service';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-destinations',
@@ -11,11 +13,12 @@ import * as mapboxgl from 'mapbox-gl';
 export class DestinationsComponent implements OnInit, OnDestroy {
 
   public searchDTO: any = {};
+  public result: any[] = [];
 
   map: mapboxgl.Map;
   style = 'mapbox://styles/malidzo/ckc3v25ez03xg1ipjk4f34zl8';
-  lat = 45.253130;
-  lng = 19.809195;
+  lat = 45.252882;
+  lng = 19.808335;
   public activeInput = -1;
 
   public entering: boolean = true;
@@ -40,7 +43,8 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   };
 
   constructor(public homeService: HomeService,
-              private cdRef: ChangeDetectorRef) { }
+              private cdRef: ChangeDetectorRef,
+              private destinationService: DestinationService) { }
 
   ngOnInit() {
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.mapbox.accessToken);
@@ -61,7 +65,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
     el.className = 'marker';
 
     new mapboxgl.Marker(el)
-    .setLngLat([19.809195,45.253130])
+    .setLngLat([this.lng ,this.lat])
     .addTo(this.map);
   }
 
@@ -72,6 +76,20 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   ngAfterViewInit() {
     this.entering = false;
     this.cdRef.detectChanges();
+  }
+
+  search() {
+    console.log(this.searchDTO);
+    if(this.selects.travelMethod.value) this.searchDTO.travelMethod = this.selects.travelMethod.value.value;
+    this.destinationService.getRecommendation(this.searchDTO).subscribe(
+      data => {
+        console.log(data);
+        this.result = data;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 

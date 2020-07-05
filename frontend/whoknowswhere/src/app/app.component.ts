@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HomeService } from './services/home.service';
 import { RegisterDialogService } from './services/register-dialog.service';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,8 @@ export class AppComponent {
   constructor(public loginDialogService: LoginDialogService,
               public registerDialogService: RegisterDialogService,
               public router: Router,
-              public homeService: HomeService) {}
+              public homeService: HomeService,
+              public authenticationService: AuthenticationService) {}
 
   private subscription: Subscription;
   private registerSubscription: Subscription;
@@ -24,6 +27,9 @@ export class AppComponent {
 
   public loginTeaserActivated: boolean = false;
   public registerTeaserActivated: boolean = false;
+
+  //ICONS
+  faUser = faUser;
 
   ngOnInit() {
     this.subscription = this.loginDialogService.receiveData().subscribe(
@@ -47,6 +53,11 @@ export class AppComponent {
     this.homeService.goingHome = false;
   }
 
+  logout(): void {
+    this.authenticationService.logout();
+    this.router.navigateByUrl('/home');
+  }
+
 
   goHome(): void {
     if (this.homeService.goingHome) return;
@@ -57,6 +68,14 @@ export class AppComponent {
   }
 
   explore(): void {
+
+    if (!this.authenticationService.isRegisteredUser()) {
+      this.loginDialogService.sendData({
+        isOpened: true
+      });
+      return;
+    }
+
     if (this.homeService.isLeaving) return;
     this.homeService.isLeaving = true;
     setTimeout(() => {

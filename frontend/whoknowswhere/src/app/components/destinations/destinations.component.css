@@ -66,6 +66,34 @@
     background: #d4d4d4;
 }
 
+.main-results {
+    text-align: center;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 14px;
+}
+
+.main-results tr:first-child {
+    font-weight: 700;
+    background: rgb(224, 224, 224);
+}
+
+.main-results tr > td:first-child {
+    width: 80px;
+}
+
+.main-results tr:not(:first-child) {
+    background: rgb(240, 240, 240);
+}
+
+.main-results td {
+    padding: 18px;
+}
+
+.result-holder {
+    margin: 0;
+    padding: 0;
+}
 
 
 

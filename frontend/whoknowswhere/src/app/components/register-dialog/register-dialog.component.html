@@ -14,6 +14,32 @@
         <div class="p-4">
             <div class="form-holder row">
 
+                <div class="input-holder d-flex align-items-center col-6" 
+                    [ngClass]="{blurred : isBlurred(firstname), 
+                    focused : isFocused(firstname) || 
+                    !isEmpty(firstname)}">
+                    <p class="input-text-value">First Name:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, firstname)" 
+                    (focus)="focusInput($event, firstname)"
+                        [(ngModel)]="registerDTO.firstname" name="firstname"
+                        #firstname="ngModel" data-index="0">
+                </div>
+
+                <div class="input-holder d-flex align-items-center col-6" 
+                    [ngClass]="{blurred : isBlurred(lastname), 
+                    focused : isFocused(lastname) || 
+                    !isEmpty(lastname)}">
+                    <p class="input-text-value">Last Name:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, lastname)" 
+                    (focus)="focusInput($event, lastname)"
+                        [(ngModel)]="registerDTO.lastname" name="lastname"
+                        #lastname="ngModel" data-index="1">
+                </div>
+
+                <div class="col-12 p-1"></div>
+
                 <div class="input-holder d-flex align-items-center col-12" 
                     [ngClass]="{blurred : isBlurred(username), 
                     focused : isFocused(username) || 
@@ -22,8 +48,8 @@
                     <input type="text" class="input-styled" autocomplete="off"
                     (blur)="blurInput($event, username)" 
                     (focus)="focusInput($event, username)"
-                        [(ngModel)]="registerDTO.username" name="username"
-                        #username="ngModel" data-index="0">
+                        [(ngModel)]="registerDTO.email" name="username"
+                        #username="ngModel" data-index="2">
                 </div>
 
                 <div class="col-12 p-1"></div>
@@ -37,7 +63,7 @@
                     (blur)="blurInput($event, password)" 
                     (focus)="focusInput($event, password)"
                         [(ngModel)]="registerDTO.password" name="password"
-                        #password="ngModel" data-index="1">
+                        #password="ngModel" data-index="3">
                 </div>
 
                 <div class="input-holder d-flex align-items-center col-6" 
@@ -49,7 +75,7 @@
                     (blur)="blurInput($event, confirmPassword)" 
                     (focus)="focusInput($event, confirmPassword)"
                         [(ngModel)]="registerDTO.confirmPassword" name="confirmPassword"
-                        #confirmPassword="ngModel" data-index="2">
+                        #confirmPassword="ngModel" data-index="4">
                 </div>
 
                 <div class="col-12 p-1"></div>
@@ -99,7 +125,7 @@
 
                 <div class="col-12 p-1"></div>
 
-                <div class="col-12 p-3 register-button">
+                <div class="col-12 p-3 register-button" (click)="register()">
                     Register
                 </div>
 

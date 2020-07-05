@@ -1,9 +1,11 @@
 <div class="main-navigation-bar" [ngClass]="{'transparent-bar' : getUrl() === 'home' || getUrl() === ''}">
     <ul class="options-1">
         <li (click)="goHome()" *ngIf="getUrl() !== 'home'">Home</li>
-        <li (click)="explore()" *ngIf="getUrl() === 'home' || getUrl() === ''">Explore</li>
-        <li (click)="openDialog()">Login</li>
-        <li (click)="openRegisterDialog()">Register</li>
+        <li (click)="explore()" *ngIf="(getUrl() === 'home' || getUrl() === '') && authenticationService.isRegisteredUser()">Explore</li>
+        <li *ngIf="!authenticationService.isLoggedIn()" (click)="openDialog()">Login</li>
+        <li *ngIf="!authenticationService.isLoggedIn()" (click)="openRegisterDialog()">Register</li>
+        <li *ngIf="authenticationService.isLoggedIn()" (click)="logout()">Logout</li>
+        <li *ngIf="authenticationService.isLoggedIn()">My Profile <fa-icon [icon]="faUser"></fa-icon></li>
         
     </ul>
 </div>

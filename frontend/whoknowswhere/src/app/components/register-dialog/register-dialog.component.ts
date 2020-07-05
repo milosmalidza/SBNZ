@@ -4,6 +4,8 @@ import { RegisterDialogService } from 'src/app/services/register-dialog.service'
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/services/location.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { error } from 'protractor';
 
 @Component({
   selector: 'div [app-register-dialog]',
@@ -13,7 +15,8 @@ import { LocationService } from 'src/app/services/location.service';
 export class RegisterDialogComponent implements OnInit {
 
   constructor(public registerDialogService: RegisterDialogService,
-              private locationService: LocationService) { }
+              private locationService: LocationService,
+              private authenticationService: AuthenticationService) { }
   
   private subscription: Subscription;
 
@@ -103,6 +106,24 @@ export class RegisterDialogComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+
+  register() {
+    this.registerDTO.motivation = this.selects.motivation.value.value;
+    this.registerDTO.userStatus = this.selects.status.value.value;
+    
+    this.authenticationService.registerRequest(this.registerDTO).subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
+  }
+
+
+
 
   focusSelect(event, obj) {
     obj.focused = true;

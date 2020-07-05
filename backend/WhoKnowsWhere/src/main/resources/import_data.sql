@@ -8,11 +8,11 @@ INSERT INTO location(id, latitude, longitude) VALUES (-4, 25.006, 21.003);
 
 INSERT INTO location(id, latitude, longitude) VALUES (-5, 27, 21);
 
-
-INSERT INTO user(dtype, id, email, firstname, lastname, password) VALUES ("ADMIN", -1, "test@gmail.com", "Pera", "Peric", "$2a$04$isBWBdDXOko7tTh4gYXt.uaXeeCDh.2eHVw9RmOHnCaMThf0b5YSO");
+--Paswword: test
+INSERT INTO user(dtype, id, email, firstname, lastname, password) VALUES ("ADMIN", -1, "test@gmail.com", "Pera", "Peric", "$2y$10$MatHAt7mHXRn.huidvCz2./GvjAke1/7U8dohvLvlIJpmzKSC3kPq");
 INSERT INTO user_authorities(user_id, authorities_id) VALUES (-1, -1);
-
-INSERT INTO user(dtype, id, email, firstname, lastname, password, location_id, motivation, user_status, birth_date) VALUES ("REGISTERED_USER", -2, "testuser@gmail.com", "Pera", "Peric", "$2a$04$isBWBdDXOko7tTh4gYXt.uaXeeCDh.2eHVw9RmOHnCaMThf0b5YSO", -1, "ENJOYING_NATURE", "EMPLOYED", "1997-01-13");
+--Paswword: test
+INSERT INTO user(dtype, id, email, firstname, lastname, password, location_id, motivation, user_status, birth_date) VALUES ("REGISTERED_USER", -2, "testuser@gmail.com", "Pera", "Peric", "$2y$10$MatHAt7mHXRn.huidvCz2./GvjAke1/7U8dohvLvlIJpmzKSC3kPq", -1, "ENJOYING_NATURE", "EMPLOYED", "1997-01-13");
 INSERT INTO user_authorities(user_id, authorities_id) VALUES (-2, -2);
 
 INSERT INTO destination(id, name, type, location_id) VALUES (-1, "Test Destination 1", "ADVENTURE", -2);

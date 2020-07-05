@@ -34,7 +34,7 @@ public class DestinationController {
 	
 	@Secured({"ROLE_USER"})
 	@PostMapping("/recommendation")
-	public ResponseEntity<List<RecommendationDTO>> getExpense(@RequestBody RecommendationsRequestDTO rrDTO) {
+	public ResponseEntity<List<RecommendationDTO>> getRecommendation(@RequestBody RecommendationsRequestDTO rrDTO) {
 		return new ResponseEntity<>(destinationService.getRecommendedDestinations(rrDTO), HttpStatus.OK);
 	}
 }

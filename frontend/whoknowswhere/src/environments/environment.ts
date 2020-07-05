@@ -4,6 +4,11 @@
 
 export const environment = {
   production: false,
+  user: 'user',
+  roles: {
+    REGISTERED_USER: 'ROLE_USER',
+    ADMIN: 'ROLE_ADMIN'
+  },
   mapbox: {
     accessToken: 'pk.eyJ1IjoibWFsaWR6byIsImEiOiJja2MybTc2aDAxNmhoMnVtcjR4bW9haTI1In0._8y3cjf0pWdxk-A8JAdTHw'
   }

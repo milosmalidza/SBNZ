@@ -30,10 +30,15 @@ public class UserDTO {
 	
 	@NotEmpty(message = "Provide password.")
 	private String password;
+
+	@NotEmpty(message = "Provide user status.")
+	private String userStatus;
+
+	@NotEmpty(message = "Provide motivation.")
+	private String motivation;
 	
 	private String token;
 	private List<String> authorities;
-	private Boolean banned;
 	
 	public UserDTO(User user) {
 		this.email = user.getEmail();
