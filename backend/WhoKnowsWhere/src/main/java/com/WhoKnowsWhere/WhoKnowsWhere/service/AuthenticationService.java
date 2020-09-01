@@ -1,8 +1,10 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.LocationDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.exception.ApiException;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.User;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.UserStatus;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.AuthorityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class AuthenticationService {
 	@Autowired
 	private AuthorityRepository authorityRepository;
 
+	@Autowired
+	private LocationService locationService;
+
 
 	public UserDTO login(String email, String password) {
 		UsernamePasswordAuthenticationToken loginToken = new UsernamePasswordAuthenticationToken(email, password);
@@ -56,7 +61,13 @@ public class AuthenticationService {
 
 		String token = jwtUtils.generateToken(auth.getName());
 		SecurityContextHolder.getContext().setAuthentication(auth);
-		UserDTO user = new UserDTO(userRepo.findByEmail(auth.getName()));
+		User ur = userRepo.findByEmail(auth.getName());
+		UserDTO user = new UserDTO(ur);
+		if (ur instanceof RegisteredUser) {
+			LocationDTO locDTO = new LocationDTO(((RegisteredUser) ur).getLocation());
+			locDTO.setGResult(locationService.retreiveLocationInfo(locDTO));
+			user.setLocationDTO(locDTO);
+		}
 		user.setToken(token);
 		return user;
 	}

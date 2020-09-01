@@ -1,5 +1,6 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.dto;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.geocode.GeocodeResult;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class LocationDTO {
 	private double longitude;
 	private double latitude;
 	private String country;
+	private GeocodeResult gResult;
 	
 	public LocationDTO(Location location) {
 		longitude = location.getLongitude();

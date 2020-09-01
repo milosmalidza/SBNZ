@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.User;
 
 import lombok.AllArgsConstructor;
@@ -36,6 +37,8 @@ public class UserDTO {
 
 	@NotEmpty(message = "Provide motivation.")
 	private String motivation;
+
+	private LocationDTO locationDTO;
 	
 	private String token;
 	private List<String> authorities;

@@ -1,7 +1,7 @@
 INSERT INTO authority(id, name) VALUES (-1, "ROLE_ADMIN");
 INSERT INTO authority(id, name) VALUES (-2, "ROLE_USER");
 
-INSERT INTO location(id, latitude, longitude) VALUES (-1, 15, 15);
+INSERT INTO location(id, latitude, longitude) VALUES (-1, 45.252882, 19.808335);
 INSERT INTO location(id, latitude, longitude) VALUES (-2, 25, 21);
 INSERT INTO location(id, latitude, longitude) VALUES (-3, 25.005, 21.001);
 INSERT INTO location(id, latitude, longitude) VALUES (-4, 25.006, 21.003);

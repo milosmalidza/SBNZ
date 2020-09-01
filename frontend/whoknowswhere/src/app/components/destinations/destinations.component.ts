@@ -4,6 +4,8 @@ import { HomeService } from 'src/app/services/home.service';
 import * as mapboxgl from 'mapbox-gl';
 import { DestinationService } from 'src/app/services/destination.service';
 import { error } from 'protractor';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { UtilityService } from 'src/app/services/utility.service';
 
 @Component({
   selector: 'app-destinations',
@@ -22,6 +24,11 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   public activeInput = -1;
 
   public entering: boolean = true;
+
+  public minDistanceId: string = 'minDistanceId';
+  public maxDistanceId: string = 'maxDistanceId';
+
+  public destinationMarkers: mapboxgl.Marker[] = [];
 
   public selects = {
     travelMethod: {
@@ -44,30 +51,114 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   constructor(public homeService: HomeService,
               private cdRef: ChangeDetectorRef,
-              private destinationService: DestinationService) { }
+              private destinationService: DestinationService,
+              private authenticationService: AuthenticationService,
+              private utilityService: UtilityService) { }
 
   ngOnInit() {
+    let that = this;
+    let user = this.authenticationService.getCurrentUser();
+    console.log(user);
+    let location = new mapboxgl.LngLat(user.locationDTO.longitude, user.locationDTO.latitude);
+
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.mapbox.accessToken);
       this.map = new mapboxgl.Map({
         container: 'map',
         style: this.style,
         zoom: 13,
-        center: [this.lng, this.lat]
+        center: location
     });
     // Add map controls
-    this.map.addControl(new mapboxgl.NavigationControl());
+    this.map.addControl(new mapboxgl.NavigationControl({showZoom: false, showCompass: false, visualizePitch: false}));
 
     this.map.on('click', (event)=> {
       console.log(event);
     });
 
-    var el = document.createElement('div');
-    el.className = 'marker';
+    
+    this.map.on('load', (event) => {
+      
+      this.addMinDistanceCircle(location.lng, location.lat, 0);
+      this.addMaxDistanceCircle(location.lng, location.lat, 0);
+    });
 
+    
+
+    let el = document.createElement('div');
+    el.onclick = (event) => {
+      console.log("Marker");
+    };
+    el.appendChild(document.createElement('div'));
+    el.className = 'marker';
     new mapboxgl.Marker(el)
-    .setLngLat([this.lng ,this.lat])
+    .setLngLat(location)
     .addTo(this.map);
   }
+
+  minimumDistanceChanged(event) {
+    let user = this.authenticationService.getCurrentUser();
+    let location = new mapboxgl.LngLat(user.locationDTO.longitude, user.locationDTO.latitude);
+
+    this.removeMinDistanceCircle();
+    this.addMinDistanceCircle(location.lng, location.lat, this.searchDTO.minDistance);
+  }
+
+  maximumDistanceChanged(event) {
+    let user = this.authenticationService.getCurrentUser();
+    let location = new mapboxgl.LngLat(user.locationDTO.longitude, user.locationDTO.latitude);
+
+    this.removeMaxDistanceCircle();
+    this.addMaxDistanceCircle(location.lng, location.lat, this.searchDTO.maxDistance);
+  }
+
+
+
+  addMinDistanceCircle(lng, lat, radius) {
+    this.map.addSource(this.minDistanceId, this.utilityService.createGeoJSONCircle([lng, lat], radius, null) as mapboxgl.AnySourceData );
+
+    this.map.addLayer({
+        "id": this.minDistanceId,
+        "type": "fill",
+        "source": this.minDistanceId,
+        "layout": {},
+        "paint": {
+            "fill-color": "blue",
+            "fill-opacity": 0.1
+        }
+    });
+  }
+
+  removeMinDistanceCircle() {
+    this.map.removeLayer(this.minDistanceId);
+    this.map.removeSource(this.minDistanceId);
+  }
+
+  addMaxDistanceCircle(lng, lat, radius) {
+    this.map.addSource(this.maxDistanceId, this.utilityService.createGeoJSONCircle([lng, lat], radius, null) as mapboxgl.AnySourceData );
+
+    this.map.addLayer({
+        "id": this.maxDistanceId,
+        "type": "fill",
+        "source": this.maxDistanceId,
+        "layout": {},
+        "paint": {
+            "fill-color": "red",
+            "fill-opacity": 0.1
+        }
+    });
+  }
+
+  removeMaxDistanceCircle() {
+    this.map.removeLayer(this.maxDistanceId);
+    this.map.removeSource(this.maxDistanceId);
+  }
+
+
+
+
+
+
+
 
   ngOnDestroy() {
     this.homeService.goingHome = false;
@@ -85,11 +176,35 @@ export class DestinationsComponent implements OnInit, OnDestroy {
       data => {
         console.log(data);
         this.result = data;
+        this.updateDestinationMarkers();
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  updateDestinationMarkers() {
+
+    this.destinationMarkers.forEach((marker) => {
+      marker.remove();
+    });
+    this.destinationMarkers = []
+
+    this.result.forEach((destination) => {
+      let el = document.createElement('div');
+      el.onclick = (event) => {
+        console.log("Marker");
+      };
+      el.appendChild(document.createElement('div'));
+      el.className = 'destination-marker';
+
+      let location = new mapboxgl.LngLat(destination.destination.location.longitude, destination.destination.location.latitude);
+      let marker = new mapboxgl.Marker(el)
+      .setLngLat(location)
+      .addTo(this.map);
+      this.destinationMarkers.push(marker);
+    });
   }
 
 

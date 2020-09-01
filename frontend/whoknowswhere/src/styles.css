@@ -122,13 +122,62 @@ body {
 
 .marker {
     position: absolute;
-    background: url('/assets/mapbox-icon.png');
-    background-size: cover;
-    width: 50px !important;
-    height: 50px !important;
+    background: rgb(194, 21, 9);
+    width: 15px !important;
+    height: 15px !important;
     border-radius: 50%;
     z-index: 99;
     cursor: pointer;
+}
+
+.marker > div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgb(194, 21, 9);
+    border-radius: 50%;
+    animation-name: markerAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 1.3s;
+    animation-play-state: running;
+}
+
+.destination-marker {
+    position: absolute;
+    background: rgb(9, 194, 108);
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50%;
+    z-index: 99;
+    cursor: pointer;
+}
+
+.destination-marker > div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgb(9, 194, 108);
+    border-radius: 50%;
+    animation-name: markerAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 1.3s;
+    animation-play-state: running;
+}
+
+@-webkit-keyframes markerAnimation {
+    from {width: 0px; height: 0px; opacity: 1;}
+    to {width: 60px; height: 60px; opacity: 0;}
+}
+
+@keyframes markerAnimation {
+    from {width: 0px; height: 0px; opacity: 1;}
+    to {width: 60px; height: 60px; opacity: 0;}
 }
 
 
