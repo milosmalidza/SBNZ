@@ -15,8 +15,8 @@ INSERT INTO user_authorities(user_id, authorities_id) VALUES (-1, -1);
 INSERT INTO user(dtype, id, email, firstname, lastname, password, location_id, motivation, user_status, birth_date) VALUES ("REGISTERED_USER", -2, "testuser@gmail.com", "Pera", "Peric", "$2y$10$MatHAt7mHXRn.huidvCz2./GvjAke1/7U8dohvLvlIJpmzKSC3kPq", -1, "ENJOYING_NATURE", "EMPLOYED", "1997-01-13");
 INSERT INTO user_authorities(user_id, authorities_id) VALUES (-2, -2);
 
-INSERT INTO destination(id, name, type, location_id) VALUES (-1, "Test Destination 1", "ADVENTURE", -2);
-INSERT INTO destination(id, name, type, location_id) VALUES (-2, "Test Destination 2", "RELAXATION", -5);
+INSERT INTO destination(id, name, type, location_id, description) VALUES (-1, "Test Destination 1", "ADVENTURE", -2, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
+INSERT INTO destination(id, name, type, location_id, description) VALUES (-2, "Test Destination 2", "RELAXATION", -5, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
 
 INSERT INTO hotel(id, name, stars, location_id) VALUES (-1, "Test Hotel 1", 5, -3);
 INSERT INTO hotel(id, name, stars, location_id) VALUES (-2, "Test Hotel 2", 3, -4);

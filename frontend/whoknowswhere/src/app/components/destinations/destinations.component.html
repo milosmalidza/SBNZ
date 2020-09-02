@@ -1,107 +1,120 @@
 <div class="row destinations-main-holder" [ngClass]="{'leaving' : homeService.goingHome, 'entering' : entering}">
     <div class="map-holder col-12 col-md-7">
         <div class="map" id="map" class="match-parent"></div>
+        <div class="close-selected-destination" [ngClass]="{selected : selectedDestination}" (click)="closeSelectedDestination()">
+            <div><fa-icon [icon]="faTimes"></fa-icon></div>
+        </div>
     </div>
     <div class="explore-holder col-12 col-md-5">
-        <div class="row col-12 p-4 main-search-fields-holder">
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="input-holder d-flex align-items-center col-12" 
-                    [ngClass]="{blurred : isBlurred(minDistance), 
-                    focused : isFocused(minDistance) || 
-                    !isEmpty(minDistance)}">
-                    <p class="input-text-value">Minimum Distance (km):</p>
-                    <input type="text" class="input-styled" autocomplete="off"
-                    (blur)="blurInput($event, minDistance)" 
-                    (keyup)="minimumDistanceChanged($event)"
-                    (focus)="focusInput($event, minDistance)"
-                        [(ngModel)]="searchDTO.minDistance" name="minDistance"
-                        #minDistance="ngModel" data-index="0">
+        <div class="row col-12 search-destination-holder" style="margin: 0; padding: 0;" *ngIf="!selectedDestination">
+            <div class="row col-12 p-4 main-search-fields-holder">
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="input-holder d-flex align-items-center col-12" 
+                        [ngClass]="{blurred : isBlurred(minDistance), 
+                        focused : isFocused(minDistance) || 
+                        !isEmpty(minDistance)}">
+                        <p class="input-text-value">Minimum Distance (km):</p>
+                        <input type="text" class="input-styled" autocomplete="off"
+                        (blur)="blurInput($event, minDistance)" 
+                        (keyup)="minimumDistanceChanged($event)"
+                        (focus)="focusInput($event, minDistance)"
+                            [(ngModel)]="searchDTO.minDistance" name="minDistance"
+                            #minDistance="ngModel" data-index="0">
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="input-holder d-flex align-items-center col-12" 
-                    [ngClass]="{blurred : isBlurred(maxDistance), 
-                    focused : isFocused(maxDistance) || 
-                    !isEmpty(maxDistance)}">
-                    <p class="input-text-value">Maximum Distance (km):</p>
-                    <input type="text" class="input-styled" autocomplete="off"
-                    (blur)="blurInput($event, maxDistance)" 
-                    (keyup)="maximumDistanceChanged($event)"
-                    (focus)="focusInput($event, maxDistance)"
-                        [(ngModel)]="searchDTO.maxDistance" name="maxDistance"
-                        #maxDistance="ngModel" data-index="1">
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="input-holder d-flex align-items-center col-12" 
+                        [ngClass]="{blurred : isBlurred(maxDistance), 
+                        focused : isFocused(maxDistance) || 
+                        !isEmpty(maxDistance)}">
+                        <p class="input-text-value">Maximum Distance (km):</p>
+                        <input type="text" class="input-styled" autocomplete="off"
+                        (blur)="blurInput($event, maxDistance)" 
+                        (keyup)="maximumDistanceChanged($event)"
+                        (focus)="focusInput($event, maxDistance)"
+                            [(ngModel)]="searchDTO.maxDistance" name="maxDistance"
+                            #maxDistance="ngModel" data-index="1">
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="input-holder d-flex align-items-center col-12" 
-                    [ngClass]="{blurred : isBlurred(desireableExpense), 
-                    focused : isFocused(desireableExpense) || 
-                    !isEmpty(desireableExpense)}">
-                    <p class="input-text-value">Desireable Expense ($):</p>
-                    <input type="text" class="input-styled" autocomplete="off"
-                    (blur)="blurInput($event, desireableExpense)" 
-                    (focus)="focusInput($event, desireableExpense)"
-                        [(ngModel)]="searchDTO.desireableExpense" name="desireableExpense"
-                        #desireableExpense="ngModel" data-index="2">
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="input-holder d-flex align-items-center col-12" 
+                        [ngClass]="{blurred : isBlurred(desireableExpense), 
+                        focused : isFocused(desireableExpense) || 
+                        !isEmpty(desireableExpense)}">
+                        <p class="input-text-value">Desireable Expense ($):</p>
+                        <input type="text" class="input-styled" autocomplete="off"
+                        (blur)="blurInput($event, desireableExpense)" 
+                        (focus)="focusInput($event, desireableExpense)"
+                            [(ngModel)]="searchDTO.desireableExpense" name="desireableExpense"
+                            #desireableExpense="ngModel" data-index="2">
+                    </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="input-holder d-flex align-items-center col-12" 
-                    [ngClass]="{blurred : isBlurred(poiDistance), 
-                    focused : isFocused(poiDistance) || 
-                    !isEmpty(poiDistance)}">
-                    <p class="input-text-value">POI Distance (km):</p>
-                    <input type="text" class="input-styled" autocomplete="off"
-                    (blur)="blurInput($event, poiDistance)" 
-                    (focus)="focusInput($event, poiDistance)"
-                        [(ngModel)]="searchDTO.poiDistance" name="poiDistance"
-                        #poiDistance="ngModel" data-index="3">
-                </div>
-            </div>
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="select-holder col-12"
-                    [ngClass]="{blurred : !selects.travelMethod.focused, 
-                    focused : selects.travelMethod.focused || 
-                    selects.travelMethod.value !== null}">
+                <!--
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="input-holder d-flex align-items-center col-12" 
+                        [ngClass]="{blurred : isBlurred(poiDistance), 
+                        focused : isFocused(poiDistance) || 
+                        !isEmpty(poiDistance)}">
+                        <p class="input-text-value">POI Distance (km):</p>
+                        <input type="text" class="input-styled" autocomplete="off"
+                        (blur)="blurInput($event, poiDistance)" 
+                        (focus)="focusInput($event, poiDistance)"
+                            [(ngModel)]="searchDTO.poiDistance" name="poiDistance"
+                            #poiDistance="ngModel" data-index="3">
+                    </div>
+                </div>-->
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="select-holder col-12"
+                        [ngClass]="{blurred : !selects.travelMethod.focused, 
+                        focused : selects.travelMethod.focused || 
+                        selects.travelMethod.value !== null}">
 
-                    <p class="input-text-value">Travel method:</p>
-                    <ng-select class="custom"
-                        (blur)="blurSelect($event, selects.travelMethod)" 
-                        (focus)="focusSelect($event, selects.travelMethod)"
-                        [(ngModel)]="selects.travelMethod.value" name="travelMethod"
-                        #travelMethod="ngModel"
-                        [searchable]="true"
-                        [clearable]="true"
-                        [items]="selects.travelMethod.items">
-                    </ng-select>
+                        <p class="input-text-value">Travel method:</p>
+                        <ng-select class="custom"
+                            (blur)="blurSelect($event, selects.travelMethod)" 
+                            (focus)="focusSelect($event, selects.travelMethod)"
+                            [(ngModel)]="selects.travelMethod.value" name="travelMethod"
+                            #travelMethod="ngModel"
+                            [searchable]="true"
+                            [clearable]="false"
+                            [items]="selects.travelMethod.items">
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-12 search-field-holder">
+                    <div class="col-12 separator"></div>
+                </div>
+
+                <div class="col-12 col-md-6 search-field-holder"></div>
+
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="col-12 search-button" (click)="search()">Search</div>
                 </div>
             </div>
-
-            <div class="col-12 search-field-holder">
-                <div class="col-12 separator"></div>
+            <div class="col-12 result-holder info">
+                <div>These destinations might be suitable for you</div>
             </div>
-
-            <div class="col-12 col-md-6 search-field-holder"></div>
-
-            <div class="col-12 col-md-6 search-field-holder">
-                <div class="col-12 search-button" (click)="search()">Search</div>
+            <div class="col-12 result-holder">
+                <table class="main-results">
+                    <tr>
+                        <td>Rank</td>
+                        <td>Name</td>
+                        <td>Type</td>
+                        <td>Points</td>
+                    </tr>
+                    <tr *ngFor="let item of result; let i = index" (click)="tableDestinationClicked(item)" class="destination-item">
+                        <td>{{i + 1}}</td>
+                        <td>{{item.destination.name}}</td>
+                        <td>{{item.destination.type}}</td>
+                        <td>{{item.rank}}</td>
+                    </tr>
+                </table>
             </div>
         </div>
-        <div class="col-12 result-holder">
-            <table class="main-results">
-                <tr>
-                    <td>Rank</td>
-                    <td>Name</td>
-                    <td>Type</td>
-                    <td>Points</td>
-                </tr>
-                <tr *ngFor="let item of result; let i = index">
-                    <td>{{i + 1}}</td>
-                    <td>{{item.destination.name}}</td>
-                    <td>{{item.destination.type}}</td>
-                    <td>{{item.rank}}</td>
-                </tr>
-            </table>
+        <div class="selected-destination" *ngIf="selectedDestination">
+            <app-selected-destination [selectedDestination]="selectedDestination"></app-selected-destination>
         </div>
     </div>
+    
 </div>

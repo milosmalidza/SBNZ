@@ -27,6 +27,9 @@ public class Destination {
 	
 	@Column(unique = true, nullable = false)
 	private String name;
+
+	@Column(length = 100000)
+	private String description;
 	
 	@Enumerated(EnumType.STRING)
 	private DestinationType type;

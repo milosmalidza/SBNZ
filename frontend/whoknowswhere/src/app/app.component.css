@@ -17,6 +17,21 @@
     box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.0);
 }
 
+.main-navigation-bar > .logo {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    list-style-type: none;
+    transform: translateY(-50%);
+    transition: .3s;
+}
+
+.main-navigation-bar > .logo > li {
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
 .main-navigation-bar > .options-1 {
     position: absolute;
     top: 50%;

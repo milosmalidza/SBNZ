@@ -1,4 +1,7 @@
 <div class="main-navigation-bar" [ngClass]="{'transparent-bar' : getUrl() === 'home' || getUrl() === ''}">
+    <ul class="logo">
+        <li>WhoKnowsWhere</li>
+    </ul>
     <ul class="options-1">
         <li (click)="goHome()" *ngIf="getUrl() !== 'home'">Home</li>
         <li (click)="explore()" *ngIf="(getUrl() === 'home' || getUrl() === '') && authenticationService.isRegisteredUser()">Explore</li>

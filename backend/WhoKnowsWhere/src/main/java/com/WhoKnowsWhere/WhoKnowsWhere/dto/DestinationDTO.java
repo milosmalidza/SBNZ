@@ -16,6 +16,7 @@ import lombok.Setter;
 public class DestinationDTO {
 	private Long id;
 	private String name;
+	private String description;
 	private DestinationType type;
 	private LocationDTO location;
 	
@@ -24,6 +25,7 @@ public class DestinationDTO {
 		name = dest.getName();
 		type = dest.getType();
 		location = new LocationDTO(dest.getLocation());
+		description = dest.getDescription();
 	}
 	
 }

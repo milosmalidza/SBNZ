@@ -13,6 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TokenInterceptor } from './interceptors/token.interceptor';
+import { SelectedDestinationComponent } from './components/selected-destination/selected-destination.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TokenInterceptor } from './interceptors/token.interceptor';
     LoginDialogComponent,
     EarthComponent,
     DestinationsComponent,
-    RegisterDialogComponent
+    RegisterDialogComponent,
+    SelectedDestinationComponent
   ],
   imports: [
     BrowserModule,

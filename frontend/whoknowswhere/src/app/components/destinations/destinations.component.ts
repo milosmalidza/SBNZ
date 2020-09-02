@@ -6,21 +6,28 @@ import { DestinationService } from 'src/app/services/destination.service';
 import { error } from 'protractor';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { UtilityService } from 'src/app/services/utility.service';
-
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { trigger, style, animate, transition } from '@angular/animations';
+var THREE = require('three');
 @Component({
   selector: 'app-destinations',
+  
   templateUrl: './destinations.component.html',
   styleUrls: ['./destinations.component.css']
 })
 export class DestinationsComponent implements OnInit, OnDestroy {
 
+
+  //ICONS
+  faTimes = faTimes;
+  //------
+
   public searchDTO: any = {};
   public result: any[] = [];
+  public selectedDestination = null;
 
   map: mapboxgl.Map;
   style = 'mapbox://styles/malidzo/ckc3v25ez03xg1ipjk4f34zl8';
-  lat = 45.252882;
-  lng = 19.808335;
   public activeInput = -1;
 
   public entering: boolean = true;
@@ -57,6 +64,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     let that = this;
+    this.selects.travelMethod.value = this.selects.travelMethod.items[0];
     let user = this.authenticationService.getCurrentUser();
     console.log(user);
     let location = new mapboxgl.LngLat(user.locationDTO.longitude, user.locationDTO.latitude);
@@ -184,6 +192,10 @@ export class DestinationsComponent implements OnInit, OnDestroy {
     );
   }
 
+  onDestinationMarkerClick(event) {
+    console.log(event.target);
+  }
+
   updateDestinationMarkers() {
 
     this.destinationMarkers.forEach((marker) => {
@@ -191,13 +203,38 @@ export class DestinationsComponent implements OnInit, OnDestroy {
     });
     this.destinationMarkers = []
 
+    let biggestRank = 0;
+    let smallestRank = 0;
     this.result.forEach((destination) => {
+      if (destination.rank > biggestRank) {
+        biggestRank = destination.rank;
+      }
+      if (destination.rank < smallestRank) {
+        smallestRank = destination.rank;
+      }
+    });
+
+    biggestRank += Math.abs(smallestRank);
+
+    this.result.forEach((destination) => {
+      let highestColor = new THREE.Color('rgb(9, 194, 108)');
+      let smallestColor = new THREE.Color('rgb(0, 0, 0)');
+      let alpha = destination.rank / biggestRank;
+      console.log(alpha);
+      let color = smallestColor.lerp(highestColor, alpha).getStyle();
+      console.log(color);
       let el = document.createElement('div');
+      el.setAttribute('data-id', destination.destination.id);
+      let child = document.createElement('div');
+
       el.onclick = (event) => {
-        console.log("Marker");
+        this.onDestinationMarkerClick(event);
       };
-      el.appendChild(document.createElement('div'));
+      el.appendChild(child);
       el.className = 'destination-marker';
+      el.style.background = color;
+      child.style.background = color;
+
 
       let location = new mapboxgl.LngLat(destination.destination.location.longitude, destination.destination.location.latitude);
       let marker = new mapboxgl.Marker(el)
@@ -205,6 +242,14 @@ export class DestinationsComponent implements OnInit, OnDestroy {
       .addTo(this.map);
       this.destinationMarkers.push(marker);
     });
+  }
+
+  tableDestinationClicked(item) {
+    this.selectedDestination = item;
+  }
+
+  closeSelectedDestination() {
+    this.selectedDestination = null;
   }
 
 

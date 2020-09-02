@@ -139,6 +139,7 @@ body {
     height: 60px;
     border: 3px solid rgb(194, 21, 9);
     border-radius: 50%;
+    pointer-events: none;
     animation-name: markerAnimation;
     animation-iteration-count: infinite;
     animation-duration: 1.3s;
@@ -164,6 +165,7 @@ body {
     height: 60px;
     border: 3px solid rgb(9, 194, 108);
     border-radius: 50%;
+    pointer-events: none;
     animation-name: markerAnimation;
     animation-iteration-count: infinite;
     animation-duration: 1.3s;

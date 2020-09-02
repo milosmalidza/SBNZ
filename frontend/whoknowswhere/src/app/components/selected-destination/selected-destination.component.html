@@ -1,0 +1,9 @@
+<div class="row main-holder">
+    <div class="col-12 destination-name">{{selectedDestination.destination.name}}</div>
+    <div class="col-6 destination-likes align-right">Total likes: {{selectedDestination.destination.likes}}</div>
+    <div class="col-6 destination-type align-right">Type: {{selectedDestination.destination.type}}</div>
+    <div class="col-6 destination-distance align-right">Distance: {{getRoundedDistance()}}km</div>
+    <div class="col-6 destination-expense align-right">Estimated Price: {{getRoundedEstimatedPrice()}}$</div>
+    <div class="col-12 destination-description-delimiter">Description:</div>
+    <div class="col-12 destination-description">{{selectedDestination.destination.description}}</div>
+</div>
