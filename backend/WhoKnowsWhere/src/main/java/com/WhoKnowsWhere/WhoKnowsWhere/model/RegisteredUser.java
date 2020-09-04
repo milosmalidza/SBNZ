@@ -1,16 +1,9 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.model;
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +30,13 @@ public class RegisteredUser extends User {
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Location location;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Destination> likedDestinations;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<PointOfInterest> likedPointOfInterests;
 
 }

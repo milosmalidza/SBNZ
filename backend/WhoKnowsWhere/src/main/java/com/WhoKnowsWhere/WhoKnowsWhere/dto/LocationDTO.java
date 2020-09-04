@@ -16,6 +16,7 @@ public class LocationDTO {
 	private double longitude;
 	private double latitude;
 	private String country;
+	private String formatted;
 	private GeocodeResult gResult;
 	
 	public LocationDTO(Location location) {

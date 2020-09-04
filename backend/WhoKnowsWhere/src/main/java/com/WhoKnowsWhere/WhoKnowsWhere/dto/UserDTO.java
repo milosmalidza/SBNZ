@@ -38,6 +38,8 @@ public class UserDTO {
 	@NotEmpty(message = "Provide motivation.")
 	private String motivation;
 
+	private String birthDate;
+
 	private LocationDTO locationDTO;
 	
 	private String token;

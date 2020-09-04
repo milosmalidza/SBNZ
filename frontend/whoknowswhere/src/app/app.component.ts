@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HomeService } from './services/home.service';
 import { RegisterDialogService } from './services/register-dialog.service';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { AuthenticationService } from './services/authentication.service';
 
 @Component({
@@ -30,6 +30,7 @@ export class AppComponent {
 
   //ICONS
   faUser = faUser;
+  faGlobe = faGlobe;
 
   ngOnInit() {
     this.subscription = this.loginDialogService.receiveData().subscribe(

@@ -2,9 +2,15 @@ package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.PointOfInterest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,6 +49,32 @@ public class UserService {
 		userRepository.save(user);
 		
 		return null;
+	}
+
+	public List<DestinationDTO> getLikedDestinations() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+		List<Destination> likedDestinations = user.getLikedDestinations();
+		List<DestinationDTO> likedDestinationsDTO = new ArrayList<>();
+		for (Destination dest : likedDestinations) {
+			likedDestinationsDTO.add(new DestinationDTO(dest));
+		}
+
+		return likedDestinationsDTO;
+	}
+
+	public List<PointOfInterestDTO> getLikedPOI() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+		List<PointOfInterest> likedPOI = user.getLikedPointOfInterests();
+		List<PointOfInterestDTO> likedPointOfInterestDTO = new ArrayList<>();
+		for (PointOfInterest poi : likedPOI) {
+			likedPointOfInterestDTO.add(new PointOfInterestDTO(poi));
+		}
+
+		return likedPointOfInterestDTO;
 	}
 
 }

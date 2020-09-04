@@ -14,6 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { SelectedDestinationComponent } from './components/selected-destination/selected-destination.component';
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,8 @@ import { SelectedDestinationComponent } from './components/selected-destination/
     NgSelectModule,
     HttpClientModule,
     FontAwesomeModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyABNvl4H4aM9ToVwM9ogm4qedE8Zq4QOuU'
     })

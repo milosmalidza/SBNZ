@@ -79,6 +79,46 @@
                 </div>
 
                 <div class="col-12 p-1"></div>
+                <div class="col-12 p-1" style="font-size: 12px; font-weight: 600;">Please enter your date of birth</div>
+
+                <div class="input-holder d-flex align-items-center col-4" 
+                    [ngClass]="{blurred : isBlurred(day), 
+                    focused : isFocused(day) || 
+                    !isEmpty(day)}">
+                    <p class="input-text-value">Day:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, day)" 
+                    (focus)="focusInput($event, day)"
+                        [(ngModel)]="birthDate.day" name="day"
+                        #day="ngModel" data-index="5">
+                </div>
+
+                <div class="input-holder d-flex align-items-center col-4" 
+                    [ngClass]="{blurred : isBlurred(month), 
+                    focused : isFocused(month) || 
+                    !isEmpty(month)}">
+                    <p class="input-text-value">Month:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, month)" 
+                    (focus)="focusInput($event, month)"
+                        [(ngModel)]="birthDate.month" name="month"
+                        #month="ngModel" data-index="6">
+                </div>
+
+                <div class="input-holder d-flex align-items-center col-4" 
+                    [ngClass]="{blurred : isBlurred(year), 
+                    focused : isFocused(year) || 
+                    !isEmpty(year)}">
+                    <p class="input-text-value">Year:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (blur)="blurInput($event, year)" 
+                    (focus)="focusInput($event, year)"
+                        [(ngModel)]="birthDate.year" name="year"
+                        #year="ngModel" data-index="7">
+                </div>
+
+
+                <div class="col-12 p-1"></div>
 
                 <div class="select-holder col-12"
                     [ngClass]="{blurred : !selects.status.focused, 
@@ -92,7 +132,7 @@
                         [(ngModel)]="selects.status.value" name="status"
                         #status="ngModel"
                         [searchable]="true"
-                        [clearable]="true"
+                        [clearable]="false"
                         [items]="selects.status.items">
                     </ng-select>
                 </div>
@@ -111,13 +151,14 @@
                         [(ngModel)]="selects.motivation.value" name="motivation"
                         #motivation="ngModel"
                         [searchable]="true"
-                        [clearable]="true"
+                        [clearable]="false"
                         [items]="selects.motivation.items">
                     </ng-select>
                 </div>
 
                 <div class="col-12 p-1"></div>
                 <div class="col-12 info-text">Please choose a place where you live</div>
+                <div class="col-12 info-text" style="font-weight: 500;" *ngIf="isLocationPicked">Currently selected: {{selectedLocation.formatted}}</div>
                 <div class="col-12 register-map-holder" style="height: 400px;">
                     <div class="map" id="register-map" class="match-parent"></div>
                 </div>

@@ -1,9 +1,67 @@
 <div class="row main-holder">
     <div class="col-12 destination-name">{{selectedDestination.destination.name}}</div>
-    <div class="col-6 destination-likes align-right">Total likes: {{selectedDestination.destination.likes}}</div>
-    <div class="col-6 destination-type align-right">Type: {{selectedDestination.destination.type}}</div>
-    <div class="col-6 destination-distance align-right">Distance: {{getRoundedDistance()}}km</div>
-    <div class="col-6 destination-expense align-right">Estimated Price: {{getRoundedEstimatedPrice()}}$</div>
+    <div class="col-6 destination-likes semi-bold">Total likes: {{selectedDestination.destination.likes}}</div>
+    <div class="col-6 destination-type semi-bold">Type: {{selectedDestination.destination.type}}</div>
+    <div class="col-6 destination-distance semi-bold">Distance: {{getRoundedDistance()}}km</div>
+    <div class="col-6 destination-expense semi-bold">Estimated Price: {{getRoundedEstimatedPrice()}}$</div>
     <div class="col-12 destination-description-delimiter">Description:</div>
     <div class="col-12 destination-description">{{selectedDestination.destination.description}}</div>
+    
+</div>
+<div class="col-12 result-holder header">
+    <div>Search for additional POI's below that are close to this destination</div>
+</div>
+<div class="row col-12 p-4 poi-search-fields-holder">
+    
+    <div class="col-12 col-md-6 search-field-holder">
+        <div class="input-holder d-flex align-items-center col-12" 
+            [ngClass]="{blurred : isBlurred(poiMinDistance), 
+            focused : isFocused(poiMinDistance) || 
+            !isEmpty(poiMinDistance)}">
+            <p class="input-text-value">Minimum Distance (km):</p>
+            <input type="text" class="input-styled" autocomplete="off"
+            (blur)="blurInput($event, poiMinDistance)" 
+            (keyup)="minimumDistanceChanged($event)"
+            (focus)="focusInput($event, poiMinDistance)"
+                [(ngModel)]="poiSearchDTO.poiMinDistance" name="poiMinDistance"
+                #poiMinDistance="ngModel" data-index="0">
+        </div>
+    </div>
+    <div class="col-12 col-md-6 search-field-holder">
+        <div class="input-holder d-flex align-items-center col-12" 
+            [ngClass]="{blurred : isBlurred(poiMaxDistance), 
+            focused : isFocused(poiMaxDistance) || 
+            !isEmpty(poiMaxDistance)}">
+            <p class="input-text-value">Maximum Distance (km):</p>
+            <input type="text" class="input-styled" autocomplete="off"
+            (blur)="blurInput($event, poiMaxDistance)" 
+            (keyup)="maximumDistanceChanged($event)"
+            (focus)="focusInput($event, poiMaxDistance)"
+                [(ngModel)]="poiSearchDTO.poiMaxDistance" name="poiMaxDistance"
+                #poiMaxDistance="ngModel" data-index="1">
+        </div>
+    </div>
+
+    <div class="col-12 search-field-holder">
+        <div class="col-12 separator"></div>
+    </div>
+
+    <div class="col-12 col-md-6 search-field-holder">
+        <div class="input-holder d-flex align-items-center col-12" 
+            [ngClass]="{blurred : isBlurred(filterPOIDistance), 
+            focused : isFocused(filterPOIDistance) || 
+            !isEmpty(filterPOIDistance)}">
+            <p class="input-text-value">Filter Distance:</p>
+            <input type="text" class="input-styled" autocomplete="off"
+            (blur)="blurInput($event, filterPOIDistance)" 
+            (focus)="focusInput($event, filterPOIDistance)"
+                [(ngModel)]="poiSearchDTO.filterPOIDistance" name="filterPOIDistance"
+                #filterPOIDistance="ngModel" data-index="2">
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 search-field-holder">
+        <div class="col-12 search-button" (click)="search()">Search</div>
+    </div>
+
 </div>

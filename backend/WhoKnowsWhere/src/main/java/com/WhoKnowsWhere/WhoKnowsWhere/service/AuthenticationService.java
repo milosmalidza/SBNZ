@@ -2,11 +2,9 @@ package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.LocationDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.exception.ApiException;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.User;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.UserStatus;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.*;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.AuthorityRepository;
+import com.WhoKnowsWhere.WhoKnowsWhere.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +21,8 @@ import com.WhoKnowsWhere.WhoKnowsWhere.dto.UserDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.UserRepository;
 import com.WhoKnowsWhere.WhoKnowsWhere.security.JwtUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 
 
@@ -47,6 +47,9 @@ public class AuthenticationService {
 
 	@Autowired
 	private LocationService locationService;
+
+	@Autowired
+	private LocationRepository locationRepository;
 
 
 	public UserDTO login(String email, String password) {
@@ -74,7 +77,13 @@ public class AuthenticationService {
 
 	public UserDTO register(UserDTO userDTO) {
 		if (userRepo.findByEmail(userDTO.getEmail()) == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			RegisteredUser user = new RegisteredUser();
+			try {
+				user.setBirthDate(sdf.parse(userDTO.getBirthDate()));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			user.setEmail(userDTO.getEmail());
 			user.setFirstname(userDTO.getFirstname());
 			user.setLastname(userDTO.getLastname());
@@ -82,6 +91,11 @@ public class AuthenticationService {
 			user.setUserStatus(UserStatus.valueOf(userDTO.getUserStatus()));
 			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 			user.getCollectionOfAuthorities().add(authorityRepository.findByName("ROLE_USER"));
+			Location location = new Location();
+			location.setLongitude(userDTO.getLocationDTO().getLongitude());
+			location.setLatitude(userDTO.getLocationDTO().getLatitude());
+			location.setCountry(userDTO.getLocationDTO().getCountry());
+			user.setLocation(location);
 			user = userRepo.save(user);
 			return new UserDTO(user);
 		} else {

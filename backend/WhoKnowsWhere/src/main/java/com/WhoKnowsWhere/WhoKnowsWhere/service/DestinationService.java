@@ -50,6 +50,8 @@ public class DestinationService {
 		session.insert(user);
 		List<RecommendationDTO> recommendations = new ArrayList<>();
 		for (Destination dest : destinations) {
+			if (Utility.getDistance(user.getLocation(), dest.getLocation()) > rrDto.getFilterDistance())
+				continue;
 			RecommendationDTO r = new RecommendationDTO(dest);
 			ExpenseDTO expense = new ExpenseDTO();
 			expense.setDistance(Utility.getDistance(user.getLocation(), dest.getLocation()));

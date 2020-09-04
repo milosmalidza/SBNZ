@@ -6,7 +6,11 @@
         </div>
     </div>
     <div class="explore-holder col-12 col-md-5">
+        
         <div class="row col-12 search-destination-holder" style="margin: 0; padding: 0;" *ngIf="!selectedDestination">
+            <div class="col-12 result-holder header">
+                <div>Fill in information and click search to begin</div>
+            </div>
             <div class="row col-12 p-4 main-search-fields-holder">
                 <div class="col-12 col-md-6 search-field-holder">
                     <div class="input-holder d-flex align-items-center col-12" 
@@ -86,7 +90,20 @@
                     <div class="col-12 separator"></div>
                 </div>
 
-                <div class="col-12 col-md-6 search-field-holder"></div>
+                <div class="col-12 col-md-6 search-field-holder">
+                    <div class="input-holder d-flex align-items-center col-12" 
+                        [ngClass]="{blurred : isBlurred(filterDestinationDistance), 
+                        focused : isFocused(filterDestinationDistance) || 
+                        !isEmpty(filterDestinationDistance)}">
+                        <p class="input-text-value">Filter Distance:</p>
+                        <input type="text" class="input-styled" autocomplete="off"
+                        (blur)="blurInput($event, filterDestinationDistance)" 
+                        (keyup)="filterDistanceChanged($event)"
+                        (focus)="focusInput($event, filterDestinationDistance)"
+                            [(ngModel)]="searchDTO.filterDistance" name="filterDestinationDistance"
+                            #filterDestinationDistance="ngModel" data-index="3">
+                    </div>
+                </div>
 
                 <div class="col-12 col-md-6 search-field-holder">
                     <div class="col-12 search-button" (click)="search()">Search</div>

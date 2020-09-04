@@ -6,6 +6,8 @@ import { environment } from 'src/environments/environment';
 import { LocationService } from 'src/app/services/location.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { error } from 'protractor';
+import { DatePipe } from '@angular/common';
+import { DateButton } from 'angular-bootstrap-datetimepicker';
 
 @Component({
   selector: 'div [app-register-dialog]',
@@ -22,6 +24,9 @@ export class RegisterDialogComponent implements OnInit {
 
   public activeInput: any = -1;
   public activated: boolean = false;
+  public marker: mapboxgl.Marker;
+  datePipe: DatePipe;
+  
 
   public selects = {
     status: {
@@ -60,6 +65,11 @@ export class RegisterDialogComponent implements OnInit {
 
   public registerDTO: any = {};
 
+  public birthDate: any = {};
+
+
+  public isLocationPicked = false;
+
   @ViewChild("ncf", {static: false}) newCertificateForm: any;
 
 
@@ -71,6 +81,11 @@ export class RegisterDialogComponent implements OnInit {
   selectedLocation: any = {};
 
   ngOnInit(): void {
+    this.datePipe = new DatePipe('en-US');
+    this.selects.motivation.value = this.selects.motivation.items[0];
+    this.selects.status.value = this.selects.status.items[0];
+
+
     Object.getOwnPropertyDescriptor(mapboxgl, 'accessToken').set(environment.mapbox.accessToken);
       this.map = new mapboxgl.Map({
         container: 'register-map',
@@ -78,8 +93,8 @@ export class RegisterDialogComponent implements OnInit {
         zoom: 1,
         center: [this.lng, this.lat]
     });
-    // Add map controls
-    this.map.addControl(new mapboxgl.NavigationControl());
+
+    this.map.addControl(new mapboxgl.NavigationControl({showZoom: false, showCompass: false, visualizePitch: false}));
 
     let that = this;
     this.map.on('click', (event)=> {
@@ -87,10 +102,29 @@ export class RegisterDialogComponent implements OnInit {
       this.selectedLocation.latitude = event.lngLat.lat;
       this.locationService.retreiveLocationInfo(this.selectedLocation).subscribe(
         data => {
-          console.log(data);
+          try {
+            console.log(data);
+            if (this.marker) this.marker.remove();
+            let el = document.createElement('div');
+            el.appendChild(document.createElement('div'));
+            el.className = 'marker';
+            this.marker = new mapboxgl.Marker(el)
+            .setLngLat(new mapboxgl.LngLat(event.lngLat.lng, event.lngLat.lat))
+            .addTo(this.map);
+  
+            this.selectedLocation.country = data.results[0].components.country;
+            this.selectedLocation.formatted = data.results[0].formatted;
+  
+  
+            this.isLocationPicked = true;
+          }
+          catch {
+            this.isLocationPicked = false;
+          }
+          
         },
         error => {
-          console.log(error)
+          this.isLocationPicked = false;
         }
       );
     });
@@ -107,14 +141,25 @@ export class RegisterDialogComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  futureDatesOnly(dateButton: DateButton, viewName: string) {
+    return dateButton.value < (new Date()).getTime();
+  }
 
   register() {
     this.registerDTO.motivation = this.selects.motivation.value.value;
     this.registerDTO.userStatus = this.selects.status.value.value;
+    this.registerDTO.locationDTO = this.selectedLocation
+    this.registerDTO.birthDate = this.datePipe.transform(
+      new Date(this.birthDate.year, this.birthDate.month - 1, this.birthDate.day - 1), 'dd-MM-yyyy');
     
     this.authenticationService.registerRequest(this.registerDTO).subscribe(
       data => {
         console.log(data);
+        this.registerDialogService.sendData(
+          {
+            isOpened: false
+          }
+        );
       },
       error => {
         console.log(error);

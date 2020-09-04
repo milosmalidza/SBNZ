@@ -8,7 +8,6 @@
 }
 
 .destination-name {
-    text-align: right;
     font-size: 32px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -57,4 +56,45 @@
 
 .align-right {
     text-align: right;
+}
+
+
+.poi-search-fields-holder {
+    background: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.search-field-holder {
+    padding: 4px;
+}
+
+.result-holder.header {
+    background: rgb(238, 238, 238);
+}
+
+.result-holder.header > div {
+    padding: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.search-field-holder .separator {
+    height: 5px;
+    background: #dfdfdf;
+}
+
+.search-button {
+    color: rgb(21, 109, 94);
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 28px;
+    background: #e4e4e4;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background: #d4d4d4;
 }

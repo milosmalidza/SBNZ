@@ -22,7 +22,9 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   faTimes = faTimes;
   //------
 
-  public searchDTO: any = {};
+  public searchDTO: any = {
+    filterDistance: 1000
+  };
   public result: any[] = [];
   public selectedDestination = null;
 
@@ -34,6 +36,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   public minDistanceId: string = 'minDistanceId';
   public maxDistanceId: string = 'maxDistanceId';
+  public filterDistanceId: string = 'filterDistanceId';
 
   public destinationMarkers: mapboxgl.Marker[] = [];
 
@@ -73,7 +76,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
       this.map = new mapboxgl.Map({
         container: 'map',
         style: this.style,
-        zoom: 13,
+        zoom: 12,
         center: location
     });
     // Add map controls
@@ -88,6 +91,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
       
       this.addMinDistanceCircle(location.lng, location.lat, 0);
       this.addMaxDistanceCircle(location.lng, location.lat, 0);
+      this.addFilterDistanceCircle(location.lng, location.lat, this.searchDTO.filterDistance);
     });
 
     
@@ -117,6 +121,14 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
     this.removeMaxDistanceCircle();
     this.addMaxDistanceCircle(location.lng, location.lat, this.searchDTO.maxDistance);
+  }
+
+  filterDistanceChanged(event) {
+    let user = this.authenticationService.getCurrentUser();
+    let location = new mapboxgl.LngLat(user.locationDTO.longitude, user.locationDTO.latitude);
+
+    this.removeFilterDistanceCircle();
+    this.addFilterDistanceCircle(location.lng, location.lat, this.searchDTO.filterDistance);
   }
 
 
@@ -160,6 +172,28 @@ export class DestinationsComponent implements OnInit, OnDestroy {
     this.map.removeLayer(this.maxDistanceId);
     this.map.removeSource(this.maxDistanceId);
   }
+
+  addFilterDistanceCircle(lng, lat, radius) {
+    this.map.addSource(this.filterDistanceId, this.utilityService.createGeoJSONCircle([lng, lat], radius, null) as mapboxgl.AnySourceData );
+
+    this.map.addLayer({
+        "id": this.filterDistanceId,
+        "type": "line",
+        "source": this.filterDistanceId,
+        "layout": {},
+        "paint": {
+          'line-color': 'black',
+          'line-width': 2
+        }
+    });
+  }
+
+  removeFilterDistanceCircle() {
+    this.map.removeLayer(this.filterDistanceId);
+    this.map.removeSource(this.filterDistanceId);
+  }
+
+
 
 
 
@@ -246,6 +280,18 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   tableDestinationClicked(item) {
     this.selectedDestination = item;
+    this.map.flyTo({
+      center: new mapboxgl.LngLat(this.selectedDestination.destination.location.longitude, this.selectedDestination.destination.location.latitude),
+      zoom: 9,
+      bearing: 0,
+      
+      // These options control the flight curve, making it move
+      // slowly and zoom out almost completely before starting
+      // to pan.
+      speed: 1, // make the flying slow
+      curve: 2, // change the speed at which it zooms out
+      essential: true // this animation is considered essential with respect to prefers-reduced-motion
+      });
   }
 
   closeSelectedDestination() {
