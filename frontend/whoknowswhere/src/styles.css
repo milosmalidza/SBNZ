@@ -172,6 +172,32 @@ body {
     animation-play-state: running;
 }
 
+.poi-marker {
+    position: absolute;
+    background: rgb(9, 95, 194);
+    width: 15px !important;
+    height: 15px !important;
+    border-radius: 50%;
+    z-index: 99;
+    cursor: pointer;
+}
+
+.poi-marker > div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border: 3px solid rgb(9, 95, 194);
+    border-radius: 50%;
+    pointer-events: none;
+    animation-name: markerAnimation;
+    animation-iteration-count: infinite;
+    animation-duration: 1.3s;
+    animation-play-state: running;
+}
+
 @-webkit-keyframes markerAnimation {
     from {width: 0px; height: 0px; opacity: 1;}
     to {width: 60px; height: 60px; opacity: 0;}
@@ -218,6 +244,10 @@ body {
 
 .ng-select.custom .ng-value-container {
     outline: none !important;
+}
+
+.ng-select.custom .ng-value-container .ng-value {
+    margin-left: 4px !important;
 }
 
 .ng-select.custom .ng-placeholder {
@@ -319,3 +349,6 @@ body {
     font-weight: 600;
 }
 
+*:focus {
+    outline: none;
+}

@@ -8,8 +8,8 @@
         <li *ngIf="!authenticationService.isLoggedIn()" (click)="openDialog()">Login</li>
         <li *ngIf="!authenticationService.isLoggedIn()" (click)="openRegisterDialog()">Register</li>
         <li *ngIf="authenticationService.isLoggedIn()" (click)="logout()">Logout</li>
-        <li *ngIf="authenticationService.isLoggedIn()">My Profile <fa-icon [icon]="faUser"></fa-icon></li>
-        
+        <li *ngIf="authenticationService.isLoggedIn() && authenticationService.isRegisteredUser()">My Profile <fa-icon [icon]="faUser"></fa-icon></li>
+        <li *ngIf="authenticationService.isLoggedIn() && authenticationService.isAdmin()" routerLink="/admin-panel/create-destination">Admin Panel</li>
     </ul>
 </div>
 

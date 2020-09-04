@@ -1,0 +1,96 @@
+<div class="row main-holder">
+    <div class="col-12 col-md-5 main-input-holder">
+        <div class="header">Create Point of Interest</div>
+        <div class="col-12 col-md-12 input-field-holder">
+            <div class="input-holder d-flex align-items-center col-12" 
+                [ngClass]="{blurred : isBlurred(name), 
+                focused : isFocused(name) || 
+                !isEmpty(name)}">
+                <p class="input-text-value">POI Name:</p>
+                <input type="text" class="input-styled" autocomplete="off"
+                (blur)="blurInput($event, name)" 
+                (focus)="focusInput($event, name)"
+                    [(ngModel)]="poiDTO.name" name="name"
+                    #name="ngModel" data-index="0">
+            </div>
+        </div>
+        <div class="col-12 col-md-12 input-field-holder">
+            <div class="input-holder d-flex align-items-center col-12" 
+                [ngClass]="{blurred : isBlurred(description), 
+                focused : isFocused(description) || 
+                !isEmpty(description)}">
+                <p class="input-text-value">POI Description:</p>
+                <input type="text" class="input-styled" autocomplete="off"
+                (blur)="blurInput($event, description)" 
+                (focus)="focusInput($event, description)"
+                    [(ngModel)]="poiDTO.description" name="description"
+                    #description="ngModel" data-index="1">
+            </div>
+        </div>
+
+        <div class="col-12 col-md-12 input-field-holder">
+            <div class="select-holder col-12"
+                [ngClass]="{blurred : !selects.types.focused, 
+                focused : selects.types.focused || 
+                selects.types.value !== null}">
+
+                <p class="input-text-value">POI Types:</p>
+                <ng-select class="custom"
+                    (blur)="blurSelect($event, selects.types)" 
+                    (focus)="focusSelect($event, selects.types)"
+                    [(ngModel)]="selects.types.value" name="types"
+                    #types="ngModel"
+                    [searchable]="true"
+                    [clearable]="true"
+                    [multiple]="true"
+                    [items]="selects.types.items">
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-12 info-input-text">
+            Please click on the map or enter the location
+        </div>
+        <div class="row input-group">
+            <div class="col-12 col-md-6 input-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(longitude), 
+                    focused : isFocused(longitude) || 
+                    !isEmpty(longitude)}">
+                    <p class="input-text-value">Longitude:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (keyup)="newLocationEntered($event)"
+                    (blur)="blurInput($event, longitude)" 
+                    (focus)="focusInput($event, longitude)"
+                        [(ngModel)]="sselectedLocation.longitude" name="longitude"
+                        #longitude="ngModel" data-index="2">
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 input-field-holder">
+                <div class="input-holder d-flex align-items-center col-12" 
+                    [ngClass]="{blurred : isBlurred(latitude), 
+                    focused : isFocused(latitude) || 
+                    !isEmpty(latitude)}">
+                    <p class="input-text-value">Latitude:</p>
+                    <input type="text" class="input-styled" autocomplete="off"
+                    (keyup)="newLocationEntered($event)"
+                    (blur)="blurInput($event, latitude)" 
+                    (focus)="focusInput($event, latitude)"
+                        [(ngModel)]="sselectedLocation.latitude" name="latitude"
+                        #latitude="ngModel" data-index="3">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 input-field-holder">
+            <div class="col-12 separator"></div>
+        </div>
+
+        <div class="col-12 col-md-12 input-field-holder">
+            <div class="col-12 create-button" (click)="createPOI()">Create POI</div>
+        </div>
+    </div>
+    <div class="col-12 col-md-7" style="position: relative; height: 100%;">
+        <app-admin-map [poiMarkers]="poiMarkers" (mapClickedEvent)="newLocation($event)"></app-admin-map>
+    </div>
+</div>

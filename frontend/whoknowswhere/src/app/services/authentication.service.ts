@@ -46,6 +46,13 @@ export class AuthenticationService {
     return false;
   }
 
+  isAdmin(): boolean {
+    if (this.isLoggedIn()) {
+      return this.getCurrentUser().authorities.includes('ROLE_ADMIN');
+    }
+    return false;
+  }
+
   getBearerToken() {
     return this.getCurrentUser().token;
   }

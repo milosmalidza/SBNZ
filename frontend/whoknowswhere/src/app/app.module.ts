@@ -15,6 +15,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TokenInterceptor } from './interceptors/token.interceptor';
 import { SelectedDestinationComponent } from './components/selected-destination/selected-destination.component';
 import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { AdminPanelComponent } from './components/admin-panel/admin-panel.component';
+import { ViewDestinationsComponent } from './components/admin-panel/view-destinations/view-destinations.component';
+import { ViewPoiComponent } from './components/admin-panel/view-poi/view-poi.component';
+import { CreateDestinationComponent } from './components/admin-panel/create-destination/create-destination.component';
+import { CreatePoiComponent } from './components/admin-panel/create-poi/create-poi.component';
+import { AdminMapComponent } from './components/admin-map/admin-map.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +30,13 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
     EarthComponent,
     DestinationsComponent,
     RegisterDialogComponent,
-    SelectedDestinationComponent
+    SelectedDestinationComponent,
+    AdminPanelComponent,
+    ViewDestinationsComponent,
+    ViewPoiComponent,
+    CreateDestinationComponent,
+    CreatePoiComponent,
+    AdminMapComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,14 @@
+<div class="row admin-panel-main-holder">
+    <div class="col-12 col-md-3 admin-pages-holder">
+        <div class="row col-12">
+            <div class="col-12 admin-tool" [ngClass]="{'selected' : getUrl() == 'create-destination'}"  routerLink="/admin-panel/create-destination"><fa-icon [icon]="faPlane"></fa-icon>&nbsp;&nbsp;&nbsp;&nbsp; Create Destination</div>
+            <div class="col-12 admin-tool" [ngClass]="{'selected' : getUrl() == 'create-poi'}" routerLink="/admin-panel/create-poi"><fa-icon [icon]="faHouseUser"></fa-icon>&nbsp;&nbsp;&nbsp;&nbsp; Create POI</div>
+            <div class="col-12 admin-tool" [ngClass]="{'selected' : getUrl() == 'view-destinations'}" routerLink="/admin-panel/view-destinations"><fa-icon [icon]="faGem"></fa-icon>&nbsp;&nbsp;&nbsp;&nbsp; View Destinations</div>
+            <div class="col-12 admin-tool" [ngClass]="{'selected' : getUrl() == 'view-poi'}" routerLink="/admin-panel/view-poi"><fa-icon [icon]="faShoppingCart"></fa-icon>&nbsp;&nbsp;&nbsp;&nbsp; View POI</div>
+        </div>
+        
+    </div>
+    <div class="col-12 col-md-9 admin-input-focus">
+        <router-outlet></router-outlet>
+    </div>
+</div>
