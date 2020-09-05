@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -17,7 +19,8 @@ public class DestinationDTO {
 	private Long id;
 	private String name;
 	private String description;
-	private DestinationType type;
+	private boolean isRemoved;
+	private List<DestinationType> type;
 	private LocationDTO location;
 	
 	public DestinationDTO(Destination dest) {
@@ -26,6 +29,7 @@ public class DestinationDTO {
 		type = dest.getType();
 		location = new LocationDTO(dest.getLocation());
 		description = dest.getDescription();
+		isRemoved = dest.isRemoved();
 	}
 	
 }

@@ -20,7 +20,7 @@ rule "Increase recommendation rank destination type: Urban, 16 < age < 25"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.URBAN) from $dest
+		DestinationDTO(type.contains(DestinationType.URBAN)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
 	then
 		System.out.println("Increased rank by 8 when 16 < age < 25 for Urban");
@@ -35,7 +35,7 @@ rule "Increase recommendation rank destination type: Adventure, 16 < age < 25"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
 	then
 		System.out.println("Increased rank by 10 when 16 < age < 25 for Adventure");
@@ -52,7 +52,7 @@ rule "Increase recommendation rank destination type: Adventure, 25 < age < 45"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
 	then
 		System.out.println("Increased rank by 6 when 25 < age < 45 for Adventure");
@@ -67,7 +67,7 @@ rule "Increase recommendation rank destination type: Relaxation, 25 < age < 45"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.RELAXATION) from $dest
+		DestinationDTO(type.contains(DestinationType.RELAXATION)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
 	then
 		System.out.println("Increased rank by 10 when 25 < age < 45 for Relaxation");
@@ -82,7 +82,7 @@ rule "Increase recommendation rank destination type: Urban, 25 < age < 45"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.URBAN) from $dest
+		DestinationDTO(type.contains(DestinationType.URBAN)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) < 45 && Utility.getYears(birthDate) > 25)
 	then
 		System.out.println("Increased rank by 8 when 25 < age < 45 for Urban");
@@ -97,7 +97,7 @@ rule "Increase recommendation rank destination type: Relaxation, age > 45"
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.RELAXATION) from $dest
+		DestinationDTO(type.contains(DestinationType.RELAXATION)) from $dest
 		$user: RegisteredUser(Utility.getYears(birthDate) > 45)
 	then
 		System.out.println("Increased rank by 8 when age > 45 for Relaxation");

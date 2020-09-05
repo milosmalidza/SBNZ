@@ -16,7 +16,7 @@ rule "Increase recommendation rank destination type: Adventure, motivation: ENJO
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(motivation == Motivation.ENJOYING_NATURE)
 	then
 		System.out.println("Increased rank by 20");
@@ -31,7 +31,7 @@ rule "Increase recommendation rank destination type: Adventure with Car, motivat
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(motivation == Motivation.ENJOYING_NATURE)
 		eval(recommendationsRequestDTO.getTravelMethod() == TravelMethod.CAR)
 	then
@@ -47,7 +47,7 @@ rule "Increase recommendation rank destination type: Relaxation, motivation: ENJ
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.RELAXATION) from $dest
+		DestinationDTO(type.contains(DestinationType.RELAXATION)) from $dest
 		$user: RegisteredUser(motivation == Motivation.ENJOYING_NATURE)
 	then
 		System.out.println("Increased rank by 10");
@@ -62,7 +62,7 @@ rule "Increase recommendation rank destination type: Adventure, motivation: SEEK
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(motivation == Motivation.SEEKING_NOVELTY)
 	then
 		System.out.println("Increased rank by 6");
@@ -77,7 +77,7 @@ rule "Increase recommendation rank destination type: Adventure, motivation: LEAR
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.ADVENTURE) from $dest
+		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
 		$user: RegisteredUser(motivation == Motivation.LEARNING_SOMETHING_NEW)
 	then
 		System.out.println("Increased rank by 2");
@@ -92,7 +92,7 @@ rule "Increase recommendation rank destination type: Urban, motivation: LEARNING
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.URBAN) from $dest
+		DestinationDTO(type.contains(DestinationType.URBAN)) from $dest
 		$user: RegisteredUser(motivation == Motivation.LEARNING_SOMETHING_NEW)
 	then
 		System.out.println("Increased rank by 15");
@@ -107,7 +107,7 @@ rule "Increase recommendation rank destination type: Urban, motivation: ENJOYING
 	lock-on-active true
 	when 
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type == DestinationType.URBAN) from $dest
+		DestinationDTO(type.contains(DestinationType.URBAN)) from $dest
 		$user: RegisteredUser(motivation == Motivation.ENJOYING_NATURE)
 	then
 		System.out.println("Decreased rank by 5");

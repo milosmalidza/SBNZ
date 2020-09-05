@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
+import { PointOfInterestService } from 'src/app/services/point-of-interest.service';
 
 @Component({
   selector: 'app-create-poi',
@@ -84,7 +85,8 @@ export class CreatePoiComponent implements OnInit {
     }
   };
 
-  constructor(private locationService: LocationService) { }
+  constructor(private locationService: LocationService,
+              private poiService: PointOfInterestService) { }
 
   ngOnInit() {
   }
@@ -119,7 +121,21 @@ export class CreatePoiComponent implements OnInit {
   }
 
   createPOI() {
-    console.log(this.selects.types.value);
+    let dto = {
+      name: this.poiDTO.name,
+      description: this.poiDTO.description,
+      type: this.selects.types.value.value,
+      location: this.selectedLocation
+    };
+    console.log(dto);
+    this.poiService.createPOI(dto).subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 

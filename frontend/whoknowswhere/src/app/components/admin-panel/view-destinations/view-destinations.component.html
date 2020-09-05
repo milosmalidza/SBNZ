@@ -1,1 +1,40 @@
-<p>view-destinations works!</p>
+<div class="row main-holder">
+    <div class="col-12 col-md-5 main-input-holder">
+        <div class="row col-12 result-holder" *ngIf="!selectedDestination">
+            <table class="main-results">
+                <tr>
+                    <td>Name</td>
+                    <td>Type</td>
+                    <td>Status</td>
+                </tr>
+                <tr *ngFor="let item of destinations; let i = index" (click)="tableDestinationClicked(item)" class="destination-item">
+                    <td>{{item.name}}</td>
+                    <td>{{item.type}}</td>
+                    <td *ngIf="item.isRemoved">Removed</td>
+                    <td *ngIf="!item.isRemoved">Not Removed</td>
+                </tr>
+            </table>
+        </div>
+        <div class="selected-destination" *ngIf="selectedDestination">
+
+            <div class="row selected-main-holder">
+                <div class="col-12 destination-name">{{selectedDestination.name}}</div>
+                <div class="col-6 destination-likes semi-bold">Total likes: {{selectedDestination.likes}}</div>
+                <div class="col-6 destination-type semi-bold">Type: {{selectedDestination.type}}</div>
+                <div class="col-12 destination-description-delimiter">Description:</div>
+                <div class="col-12 destination-description">{{selectedDestination.description}}</div>
+            </div>
+            <div class="col-12 col-md-12 input-field-holder">
+                <div class="col-12 create-button" *ngIf="!selectedDestination.isRemoved" (click)="removeDestination()">Remove Destination</div>
+                <div class="col-12 create-button" *ngIf="selectedDestination.isRemoved" (click)="restoreDestination()">Restore Destination</div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-12 col-md-7" style="position: relative; height: 100%;">
+        <app-admin-map [destinationMarkers]="destinationMarkers"></app-admin-map>
+        <div class="close-selected-destination" [ngClass]="{selected : selectedDestination}" (click)="closeSelectedDestination()">
+            <div><fa-icon [icon]="faTimes"></fa-icon></div>
+        </div>
+    </div>
+</div>

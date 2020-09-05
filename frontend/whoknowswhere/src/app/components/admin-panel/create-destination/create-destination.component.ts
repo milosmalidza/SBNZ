@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
+import { DestinationService } from 'src/app/services/destination.service';
 
 @Component({
   selector: 'app-create-destination',
@@ -52,7 +53,8 @@ export class CreateDestinationComponent implements OnInit {
     }
   };
 
-  constructor(private locationService: LocationService) { }
+  constructor(private locationService: LocationService,
+              private destinationService: DestinationService) { }
 
   ngOnInit() {
   }
@@ -87,7 +89,23 @@ export class CreateDestinationComponent implements OnInit {
   }
 
   createDestination() {
-    console.log(this.selects.types.value);
+    let dto = {
+      name: this.destinationDTO.name,
+      description: this.destinationDTO.description,
+      type: this.selects.types.value.map((val) => {
+        return val.value;
+      }),
+      location: this.selectedLocation
+    };
+    console.log(dto);
+    this.destinationService.createDestination(dto).subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 

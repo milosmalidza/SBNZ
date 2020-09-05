@@ -25,11 +25,14 @@ public class Destination {
 
 	@Column(length = 100000)
 	private String description;
-	
+
+	private boolean isRemoved = false;
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	private DestinationType type;
+	private List<DestinationType> type;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Location location;
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

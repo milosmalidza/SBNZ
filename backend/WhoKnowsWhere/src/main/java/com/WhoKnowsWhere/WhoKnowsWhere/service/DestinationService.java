@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +92,42 @@ public class DestinationService {
 		
 		return expense;
 	}
-	
+
+	public DestinationDTO createDestination(DestinationDTO dto) {
+
+		Destination destination = new Destination();
+		destination.setName(dto.getName());
+		destination.setDescription(dto.getDescription());
+		Location location = new Location();
+		location.setCountry(dto.getLocation().getCountry());
+		location.setLatitude(dto.getLocation().getLatitude());
+		location.setLongitude(dto.getLocation().getLongitude());
+		destination.setLocation(location);
+		destination.setType(dto.getType());
+
+		destination = destinationRepository.save(destination);
+		dto.setId(destination.getId());
+		return dto;
+	}
+
+	public List<DestinationDTO> getAllDestinations() {
+		List<Destination> destinations = destinationRepository.findAll();
+		List<DestinationDTO> dto = destinations.stream().map(destination -> new DestinationDTO(destination)).collect(Collectors.toList());
+		return dto;
+	}
+
+
+	public DestinationDTO removeDestination(DestinationDTO dto) {
+		Destination destination = destinationRepository.findById(dto.getId()).get();
+		destination.setRemoved(true);
+		destinationRepository.save(destination);
+		return dto;
+	}
+
+	public DestinationDTO restoreDestination(DestinationDTO dto) {
+		Destination destination = destinationRepository.findById(dto.getId()).get();
+		destination.setRemoved(false);
+		destinationRepository.save(destination);
+		return dto;
+	}
 }

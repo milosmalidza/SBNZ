@@ -26,12 +26,13 @@ public class PointOfInterest {
     @Column(length = 100000)
     private String description;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Location location;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<POIType> poiTypes;
+    private POIType poiType;
+
+    private boolean isRemoved = false;
 
     @ManyToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     private List<RegisteredUser> likedBy;

@@ -13,5 +13,21 @@ export class DestinationService {
     return this.http.post<any>('api/dest/recommendation', dto);
   }
 
+  getAllDestinations(): Observable<any> {
+    return this.http.get<any>('api/dest/all');
+  }
+
+  createDestination(dto: any): Observable<any> {
+    return this.http.post<any>('api/dest/create-destination', dto);
+  }
+
+  removeDestination(dto: any): Observable<any> {
+    return this.http.post<any>('api/dest/delete', dto);
+  }
+
+  restoreDestination(dto: any): Observable<any> {
+    return this.http.post<any>('api/dest/restore', dto);
+  }
+
 
 }

@@ -2,21 +2,15 @@ package com.WhoKnowsWhere.WhoKnowsWhere.controller;
 
 import java.util.List;
 
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.*;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsResponseDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.service.DestinationService;
 
 @Controller
@@ -37,4 +31,30 @@ public class DestinationController {
 	public ResponseEntity<List<RecommendationDTO>> getRecommendation(@RequestBody RecommendationsRequestDTO rrDTO) {
 		return new ResponseEntity<>(destinationService.getRecommendedDestinations(rrDTO), HttpStatus.OK);
 	}
+
+	@Secured({"ROLE_ADMIN"})
+	@PostMapping("/create-destination")
+	public ResponseEntity<DestinationDTO> createDestination(@RequestBody DestinationDTO dto) {
+		return new ResponseEntity<>(destinationService.createDestination(dto), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_ADMIN"})
+	@GetMapping("/all")
+	public ResponseEntity<List<DestinationDTO>> getAllDestinations() {
+		return new ResponseEntity<>(destinationService.getAllDestinations(), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_ADMIN"})
+	@PostMapping("/delete")
+	public ResponseEntity<DestinationDTO> deleteDestination(@RequestBody DestinationDTO dto) {
+		return new ResponseEntity<>(destinationService.removeDestination(dto), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_ADMIN"})
+	@PostMapping("/restore")
+	public ResponseEntity<DestinationDTO> restoreDestination(@RequestBody DestinationDTO dto) {
+		return new ResponseEntity<>(destinationService.restoreDestination(dto), HttpStatus.OK);
+	}
+
+
 }
