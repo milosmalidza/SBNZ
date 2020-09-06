@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
 
+import java.util.List;
+
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
-
+    List<Destination> findByIsRemovedFalse();
 }

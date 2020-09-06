@@ -13,6 +13,18 @@ export class DestinationService {
     return this.http.post<any>('api/dest/recommendation', dto);
   }
 
+  getTrending(): Observable<any> {
+    return this.http.get<any>('api/dest/trending');
+  }
+
+  likeDestination(destination: any): Observable<any> {
+    return this.http.post<any>('api/dest/like', destination);
+  }
+
+  isLikedDestination(destination: any): Observable<any> {
+    return this.http.post<any>('api/dest/is-liked', destination);
+  }
+
   getAllDestinations(): Observable<any> {
     return this.http.get<any>('api/dest/all');
   }

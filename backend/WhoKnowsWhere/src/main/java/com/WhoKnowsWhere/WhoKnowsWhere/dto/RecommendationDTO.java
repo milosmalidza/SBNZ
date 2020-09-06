@@ -17,6 +17,7 @@ public class RecommendationDTO implements Comparable<RecommendationDTO>{
 	private DestinationDTO destination;
 	private PointOfInterestDTO poi;
 	private ExpenseDTO expense;
+	private boolean isTrending;
 	
 	public RecommendationDTO(Destination dest) {
 		destination = new DestinationDTO(dest);

@@ -18,5 +18,6 @@ public class RecommendationsRequestDTO {
 	private double maxDistance;
 	private double minDistance;
 	private double filterDistance;
+	private DestinationDTO destination;
 	private PointOfInterestSortingOrder poiso;
 }

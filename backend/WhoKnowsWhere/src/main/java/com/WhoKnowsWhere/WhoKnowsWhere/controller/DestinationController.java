@@ -3,6 +3,7 @@ package com.WhoKnowsWhere.WhoKnowsWhere.controller;
 import java.util.List;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.*;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,24 @@ public class DestinationController {
 	@GetMapping("/expense/{id}/{travelMethod}")
 	public ResponseEntity<ExpenseDTO> getExpense(@PathVariable("id") Long destinationId, @PathVariable("travelMethod") String travelMethod) {
 		return new ResponseEntity<>(destinationService.getExpense(destinationId, travelMethod), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_ADMIN"})
+	@GetMapping("/trending")
+	public ResponseEntity<List<DestinationDTO>> getTrending() {
+		return new ResponseEntity<>(destinationService.getTrending(), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_USER"})
+	@PostMapping("/is-liked")
+	public ResponseEntity<IsLikedDTO> isLiked(@RequestBody DestinationDTO dto) {
+		return new ResponseEntity<>(destinationService.isLiked(dto), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_USER"})
+	@PostMapping("/like")
+	public ResponseEntity<DestinationDTO> likeDestination(@RequestBody DestinationDTO dto) {
+		return new ResponseEntity<>(destinationService.likeDestination(dto), HttpStatus.OK);
 	}
 	
 	@Secured({"ROLE_USER"})

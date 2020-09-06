@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { PointOfInterestService } from 'src/app/services/point-of-interest.service';
 
 @Component({
   selector: 'app-selected-poi',
@@ -12,9 +13,18 @@ export class SelectedPoiComponent implements OnInit {
   public activeInput = -1;
   public poiSearchDTO: any = {};
 
-  constructor() { }
+  constructor(private poiService: PointOfInterestService) { }
 
   ngOnInit() {
+    this.poiService.isLikedPOI(this.selectedPOI.poi).subscribe(
+      data => {
+        console.log(data);
+        this.selectedPOI.isLiked = data.liked;
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
 
@@ -36,6 +46,19 @@ export class SelectedPoiComponent implements OnInit {
 
   search() {
     
+  }
+
+  like() {
+    console.log(this.selectedPOI);
+    this.poiService.likePOI(this.selectedPOI.poi).subscribe(
+      data => {
+        this.selectedPOI.isLiked = true;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
 }

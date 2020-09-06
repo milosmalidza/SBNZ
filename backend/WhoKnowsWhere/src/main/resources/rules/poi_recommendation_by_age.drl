@@ -1,0 +1,67 @@
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.POIType;
+
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Utility;
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
+
+
+rule "Increase recommendation rank poi type: Club, 16 < age < 25"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.CLUB) from $poi
+		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
+	then
+		System.out.println("Increased rank by 8 when 16 < age < 25 for Club");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 8);
+		}
+end
+
+rule "Increase recommendation rank poi type: Restaurant, 16 < age < 25"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.RESTAURANT) from $poi
+		$user: RegisteredUser(Utility.getYears(birthDate) < 25 && Utility.getYears(birthDate) > 16)
+	then
+		System.out.println("Increased rank by 5 when 16 < age < 25 for Restaurant");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 5);
+		}
+end
+
+rule "Increase recommendation rank poi type: Restaurant, age >= 25"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.RESTAURANT) from $poi
+		$user: RegisteredUser(Utility.getYears(birthDate) >= 25)
+	then
+		System.out.println("Increased rank by 10 when age >= 25 for Restaurant");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 10);
+		}
+end
+
+rule "Increase recommendation rank poi type: Yachting, age >= 45"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.YACHTING) from $poi
+		$user: RegisteredUser(Utility.getYears(birthDate) >= 45)
+	then
+		System.out.println("Increased rank by 15 when age >= 45 for Restaurant");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 15);
+		}
+end
+

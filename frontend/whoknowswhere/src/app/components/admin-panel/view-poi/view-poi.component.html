@@ -1,6 +1,26 @@
 <div class="row main-holder">
     <div class="col-12 col-md-5 main-input-holder">
+        
         <div class="row col-12 result-holder" *ngIf="!selectedPOI">
+            <div class="col-12 col-md-12 input-field-holder">
+                <div class="select-holder col-12"
+                    [ngClass]="{blurred : !selects.category.focused, 
+                    focused : selects.category.focused || 
+                    selects.category.value !== null}">
+    
+                    <p class="input-text-value">Category:</p>
+                    <ng-select class="custom"
+                        (blur)="blurSelect($event, selects.category)" 
+                        (focus)="focusSelect($event, selects.category)"
+                        [(ngModel)]="selects.category.value" name="category"
+                        #category="ngModel"
+                        [searchable]="true"
+                        [clearable]="false"
+                        (change)="itemChanged($event)"
+                        [items]="selects.category.items">
+                    </ng-select>
+                </div>
+            </div>
             <table class="main-results">
                 <tr>
                     <td>Name</td>
@@ -10,8 +30,8 @@
                 <tr *ngFor="let item of pois; let i = index" (click)="tablePOIClicked(item)" class="destination-item">
                     <td>{{item.name}}</td>
                     <td>{{item.type}}</td>
-                    <td *ngIf="item.isRemoved">Removed</td>
-                    <td *ngIf="!item.isRemoved">Not Removed</td>
+                    <td *ngIf="item.removed">Removed</td>
+                    <td *ngIf="!item.removed">Not Removed</td>
                 </tr>
             </table>
         </div>
@@ -19,14 +39,13 @@
 
             <div class="row selected-main-holder">
                 <div class="col-12 destination-name">{{selectedPOI.name}}</div>
-                <div class="col-6 destination-likes semi-bold">Total likes: {{selectedPOI.likes}}</div>
                 <div class="col-6 destination-type semi-bold">Type: {{selectedPOI.type}}</div>
                 <div class="col-12 destination-description-delimiter">Description:</div>
                 <div class="col-12 destination-description">{{selectedPOI.description}}</div>
             </div>
             <div class="col-12 col-md-12 input-field-holder">
-                <div class="col-12 create-button" *ngIf="!selectedPOI.isRemoved" (click)="removePOI()">Remove POI</div>
-                <div class="col-12 create-button" *ngIf="selectedPOI.isRemoved" (click)="restorePOI()">Restore POI</div>
+                <div class="col-12 create-button" *ngIf="!selectedPOI.removed" (click)="removePOI()">Remove POI</div>
+                <div class="col-12 create-button" *ngIf="selectedPOI.removed" (click)="restorePOI()">Restore POI</div>
             </div>
             
         </div>

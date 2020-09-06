@@ -83,7 +83,7 @@ export class AdminMapComponent implements OnInit {
       this.map = new mapboxgl.Map({
         container: 'map',
         style: this.style,
-        zoom: 5,
+        zoom: 2,
         center: [0, 0]
     });
     // Add map controls

@@ -1,13 +1,13 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.*;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.DestinationLikeEvent;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.PointOfInterestLikeEvent;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.*;
+import com.WhoKnowsWhere.WhoKnowsWhere.repository.LikeDestinationRepository;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.DestinationRepository;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.UserRepository;
 import com.WhoKnowsWhere.WhoKnowsWhere.utility.Constants;
@@ -38,6 +32,9 @@ public class DestinationService {
 	
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private LikeDestinationRepository likeDestinationRepository;
 	
 	public List<RecommendationDTO> getRecommendedDestinations(RecommendationsRequestDTO rrDto) {
 		
@@ -45,13 +42,14 @@ public class DestinationService {
 		String currentPrincipalName = authentication.getName();
 		RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
 		
-		List<Destination> destinations = destinationRepository.findAll();
+		List<Destination> destinations = destinationRepository.findByIsRemovedFalse();
 		
 		
 		KieSession session = container.newKieSession(Constants.KIE_SESSION);
 		session.setGlobal("recommendationsRequestDTO", rrDto);
 		session.insert(user);
 		List<RecommendationDTO> recommendations = new ArrayList<>();
+		List<LikeDestination> likeDestinations = likeDestinationRepository.findAll();
 		for (Destination dest : destinations) {
 			if (Utility.getDistance(user.getLocation(), dest.getLocation()) > rrDto.getFilterDistance())
 				continue;
@@ -65,6 +63,10 @@ public class DestinationService {
 			recommendations.add(r);
 			session.insert(r);
 			session.insert(expense);
+		}
+
+		for (LikeDestination dest : likeDestinations) {
+			session.insert(new DestinationLikeEvent(dest.getLikeTime(), dest.getDestination()));
 		}
 		
 		session.fireAllRules();
@@ -130,4 +132,79 @@ public class DestinationService {
 		destinationRepository.save(destination);
 		return dto;
 	}
+
+	public IsLikedDTO isLiked(DestinationDTO dto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+		IsLikedDTO likedDTO = new IsLikedDTO(false);
+
+		Destination destination = destinationRepository.findById(dto.getId()).get();
+		List<Destination> likedDestinations = user.getLikedDestinations();
+		for (Destination likedDest : likedDestinations) {
+			if (likedDest.getId() == destination.getId()) {
+				likedDTO.setLiked(true);
+				break;
+			}
+		}
+
+		return likedDTO;
+	}
+
+	public DestinationDTO likeDestination(DestinationDTO dto) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+
+		Destination destination = destinationRepository.findById(dto.getId()).get();
+		List<Destination> likedDestinations = user.getLikedDestinations();
+		for (Destination likedDest : likedDestinations) {
+			if (likedDest.getId() == destination.getId()) {
+				return dto;
+			}
+		}
+		LikeDestination likeDestination = new LikeDestination();
+		likeDestination.setLikeTime(new Date());
+		likeDestination.setRegisteredUser(user);
+		likeDestination.setDestination(destination);
+
+		user.getLikedDestinations().add(destination);
+		destination.getLikedBy().add(user);
+
+		destinationRepository.save(destination);
+		userRepository.save(user);
+		likeDestinationRepository.save(likeDestination);
+
+
+		return dto;
+	}
+
+	public List<DestinationDTO> getTrending() {
+
+		List<DestinationDTO> destinationDTOS = new ArrayList<>();
+
+		KieSession session = container.newKieSession(Constants.KIE_SESSION);
+		session.setGlobal("destinationDTOS", destinationDTOS);
+
+		List<LikeDestination> likeDestinations = likeDestinationRepository.findAll();
+		List<Destination> destinations = destinationRepository.findByIsRemovedFalse();
+
+		for(Destination dest : destinations) {
+			session.insert(dest);
+		}
+
+		for(LikeDestination likeDestination : likeDestinations) {
+			session.insert(new DestinationLikeEvent(likeDestination.getLikeTime(), likeDestination.getDestination()));
+		}
+
+
+		session.fireAllRules();
+		session.dispose();
+
+
+		return destinationDTOS;
+	}
+
+
+
 }

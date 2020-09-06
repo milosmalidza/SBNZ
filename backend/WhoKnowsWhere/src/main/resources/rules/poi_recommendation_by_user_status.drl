@@ -1,0 +1,26 @@
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.POIType;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.UserStatus
+
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Utility;
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
+
+rule "Increase recommendation rank poi type: Forest, status: RETIRED"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.FOREST) from $poi
+		$user: RegisteredUser(userStatus == UserStatus.RETIRED)
+	then
+		System.out.println("Increased rank by 6");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 6);
+		}
+
+end

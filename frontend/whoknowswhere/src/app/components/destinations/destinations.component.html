@@ -133,7 +133,12 @@
             </div>
         </div>
         <div class="selected-destination" *ngIf="selectedDestination && !selectedPOI">
-            <app-selected-destination [selectedDestination]="selectedDestination" (poiClicked)="tablePOIClicked($event)"></app-selected-destination>
+            <app-selected-destination [selectedDestination]="selectedDestination" 
+            (poiClicked)="tablePOIClicked($event)" 
+            (poisUpdated)="poisUpdated($event)"
+            (poiMinimumDistanceChanged)="poiMinimumDistanceChanged($event)"
+            (poiMaximumDistanceChanged)="poiMaximumDistanceChanged($event)"
+            (poiFilterDistanceChanged)="poiFilterDistanceChanged($event)"></app-selected-destination>
         </div>
         <div class="selected-destination" *ngIf="selectedPOI">
             <app-selected-poi [selectedPOI]="selectedPOI"></app-selected-poi>

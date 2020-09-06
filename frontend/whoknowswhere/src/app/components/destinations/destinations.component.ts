@@ -26,6 +26,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
     filterDistance: 1000
   };
   public result: any[] = [];
+  public pois: any[] = [];
   public selectedDestination = null;
   public selectedPOI = null;
 
@@ -40,6 +41,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   public filterDistanceId: string = 'filterDistanceId';
 
   public destinationMarkers: mapboxgl.Marker[] = [];
+  public poiMarkers: mapboxgl.Marker[] = [];
 
   public selects = {
     travelMethod: {
@@ -130,6 +132,30 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
     this.removeFilterDistanceCircle();
     this.addFilterDistanceCircle(location.lng, location.lat, this.searchDTO.filterDistance);
+  }
+
+
+
+  poiMinimumDistanceChanged(event) {
+    console.log(this.selectedDestination);
+    let location = new mapboxgl.LngLat(this.selectedDestination.destination.location.longitude, this.selectedDestination.destination.location.latitude);
+
+    this.removeMinDistanceCircle();
+    this.addMinDistanceCircle(location.lng, location.lat, event.minDistance);
+  }
+
+  poiMaximumDistanceChanged(event) {
+    let location = new mapboxgl.LngLat(this.selectedDestination.destination.location.longitude, this.selectedDestination.destination.location.latitude);
+
+    this.removeMaxDistanceCircle();
+    this.addMaxDistanceCircle(location.lng, location.lat, event.maxDistance);
+  }
+
+  poiFilterDistanceChanged(event) {
+    let location = new mapboxgl.LngLat(this.selectedDestination.destination.location.longitude, this.selectedDestination.destination.location.latitude);
+
+    this.removeFilterDistanceCircle();
+    this.addFilterDistanceCircle(location.lng, location.lat, event.filterDistance);
   }
 
 
@@ -297,14 +323,77 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   closeSelectedDestination() {
     this.selectedDestination = null;
+    this.minimumDistanceChanged(null);
+    this.maximumDistanceChanged(null);
+    this.filterDistanceChanged(null);
+
+    this.poiMarkers.forEach((marker) => {
+      marker.remove();
+    });
+    this.poiMarkers = [];
+  }
+
+  poisUpdated(pois) {
+    console.log(pois);
+    this.pois = pois;
+    this.updatePOIMarkers();
+  }
+
+  updatePOIMarkers() {
+
+    this.poiMarkers.forEach((marker) => {
+      marker.remove();
+    });
+    this.poiMarkers = [];
+
+    let biggestRank = 0;
+    let smallestRank = 0;
+    this.pois.forEach((poi) => {
+      if (poi.rank > biggestRank) {
+        biggestRank = poi.rank;
+      }
+      if (poi.rank < smallestRank) {
+        smallestRank = poi.rank;
+      }
+    });
+
+    biggestRank += Math.abs(smallestRank);
+
+    this.pois.forEach((poi) => {
+      let highestColor = new THREE.Color('rgb(9, 95, 194)');
+      let smallestColor = new THREE.Color('rgb(0, 0, 0)');
+      let alpha = poi.rank / biggestRank;
+      console.log(alpha);
+      let color = smallestColor.lerp(highestColor, alpha).getStyle();
+      console.log(color);
+      let el = document.createElement('div');
+      el.setAttribute('data-id', poi.poi.id);
+      let child = document.createElement('div');
+
+      el.onclick = (event) => {
+        this.onDestinationMarkerClick(event);
+      };
+      el.appendChild(child);
+      el.className = 'poi-marker';
+      el.style.background = color;
+      child.style.background = color;
+
+
+      let location = new mapboxgl.LngLat(poi.poi.location.longitude, poi.poi.location.latitude);
+      let marker = new mapboxgl.Marker(el)
+      .setLngLat(location)
+      .addTo(this.map);
+      this.poiMarkers.push(marker);
+    });
   }
 
 
   tablePOIClicked(item) {
     this.selectedPOI = item;
+    console.log(this.selectedPOI);
     this.map.flyTo({
       center: new mapboxgl.LngLat(this.selectedPOI.poi.location.longitude, this.selectedPOI.poi.location.latitude),
-      zoom: 9,
+      zoom: 19,
       bearing: 0,
       
       // These options control the flight curve, making it move
@@ -318,7 +407,12 @@ export class DestinationsComponent implements OnInit, OnDestroy {
 
   closeSelectedPOI() {
     this.selectedPOI = null;
+    this.poiMarkers.forEach((marker) => {
+      marker.remove();
+    });
+    this.poiMarkers = [];
     this.tableDestinationClicked(this.selectedDestination);
+    
   }
 
 

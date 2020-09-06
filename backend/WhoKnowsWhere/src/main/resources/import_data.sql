@@ -1,10 +1,15 @@
 INSERT INTO authority(id, name) VALUES (-1, "ROLE_ADMIN");
 INSERT INTO authority(id, name) VALUES (-2, "ROLE_USER");
 
-INSERT INTO location(id, latitude, longitude) VALUES (-1, 45.252882, 19.808335);
-INSERT INTO location(id, latitude, longitude) VALUES (-2, 25, 21);
-INSERT INTO location(id, latitude, longitude) VALUES (-3, 25.005, 21.001);
-INSERT INTO location(id, latitude, longitude) VALUES (-4, 25.006, 21.003);
+INSERT INTO location(id, latitude, longitude) VALUES (-1, 45.253882, 19.809335);
+INSERT INTO location(id, latitude, longitude) VALUES (-2, 44.802954, 20.451649);
+INSERT INTO location(id, latitude, longitude) VALUES (-3, 44.802154, 20.452649);
+INSERT INTO location(id, latitude, longitude) VALUES (-4, 44.812154, 20.452649);
+
+INSERT INTO location(id, latitude, longitude) VALUES (-6, 44.803954, 20.451649);
+INSERT INTO location(id, latitude, longitude) VALUES (-7, 44.804954, 20.451649);
+INSERT INTO location(id, latitude, longitude) VALUES (-8, 44.802954, 20.454649);
+INSERT INTO location(id, latitude, longitude) VALUES (-9, 44.802954, 20.455649);
 
 INSERT INTO location(id, latitude, longitude) VALUES (-5, 27, 21);
 
@@ -22,6 +27,12 @@ INSERT INTO destination_type(destination_id, type) VALUES (-1, "RELAXATION");
 INSERT INTO destination_type(destination_id, type) VALUES (-1, "URBAN");
 
 INSERT INTO destination_type(destination_id, type) VALUES (-2, "ADVENTURE");
+
+INSERT INTO point_of_interest(id, name, is_removed, poi_type, location_id, description) VALUES (-1, "Test POI 1", 0, "RESTAURANT", -4, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
+INSERT INTO point_of_interest(id, name, is_removed, poi_type, location_id, description) VALUES (-2, "Test POI 2", 0, "CLUB", -6, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
+INSERT INTO point_of_interest(id, name, is_removed, poi_type, location_id, description) VALUES (-3, "Test POI 3", 0, "YACHTING", -7, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
+INSERT INTO point_of_interest(id, name, is_removed, poi_type, location_id, description) VALUES (-4, "Test POI 4", 0, "FOREST", -8, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
+INSERT INTO point_of_interest(id, name, is_removed, poi_type, location_id, description) VALUES (-5, "Test POI 5", 0, "HOTEL", -9, "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sollicitudin dui at placerat consequat. Nullam in nulla non leo mattis elementum. Aenean iaculis mi sit amet bibendum iaculis. Ut ac sem nibh. Mauris eu est ut diam hendrerit ultricies. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum non nulla tincidunt, cursus erat vitae, dignissim ante. Morbi sit amet tellus erat. Cras et tempor quam.");
 
 
 INSERT INTO hotel(id, name, stars, location_id) VALUES (-1, "Test Hotel 1", 5, -3);

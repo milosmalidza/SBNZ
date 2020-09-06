@@ -1,21 +1,26 @@
 package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
-import com.WhoKnowsWhere.WhoKnowsWhere.model.PointOfInterest;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.*;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.DestinationLikeEvent;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.PointOfInterestLikeEvent;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.*;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.DestinationRepository;
+import com.WhoKnowsWhere.WhoKnowsWhere.repository.LikePointOfInterestRepository;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.PointOfInterestRepository;
 import com.WhoKnowsWhere.WhoKnowsWhere.repository.UserRepository;
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Constants;
+import com.WhoKnowsWhere.WhoKnowsWhere.utility.Utility;
 import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,14 +36,47 @@ public class PointOfInterestService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<RecommendationDTO> getRecommendedPOI(RecommendationsRequestDTO rrDTO) {
+    @Autowired
+    private LikePointOfInterestRepository likePointOfInterestRepository;
 
-        List<PointOfInterest> pois = pointOfInterestRepository.findAll();
+    public List<RecommendationDTO> getRecommendedPOI(RecommendationsRequestDTO rrDto) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+
+        KieSession session = container.newKieSession(Constants.KIE_SESSION);
+        session.setGlobal("recommendationsRequestDTO", rrDto);
+        session.insert(user);
+
+        List<PointOfInterest> pois = pointOfInterestRepository.findByIsRemovedFalse();
         List<RecommendationDTO> recommendations = new ArrayList<>();
+        List<LikePointOfInterest> likePointOfInterests = likePointOfInterestRepository.findAll();
         for (PointOfInterest poi : pois) {
-            recommendations.add(new RecommendationDTO(poi));
+            Location poiLocation = new Location();
+            poiLocation.setLongitude(rrDto.getDestination().getLocation().getLongitude());
+            poiLocation.setLatitude(rrDto.getDestination().getLocation().getLatitude());
+            if (Utility.getDistance(poiLocation, poi.getLocation()) > rrDto.getFilterDistance())
+                continue;
+
+            RecommendationDTO r = new RecommendationDTO(poi);
+            ExpenseDTO expense = new ExpenseDTO();
+            expense.setDistance(Utility.getDistance(poiLocation, poi.getLocation()));
+
+            r.setExpense(expense);
+
+            recommendations.add(r);
+            session.insert(r);
         }
 
+        for (LikePointOfInterest poi : likePointOfInterests) {
+            session.insert(new PointOfInterestLikeEvent(poi.getLikeTime(), poi.getPointOfInterest()));
+        }
+
+        session.fireAllRules();
+        session.dispose();
+
+        Collections.sort(recommendations);
         return recommendations;
     }
 
@@ -79,4 +117,77 @@ public class PointOfInterestService {
     }
 
 
+
+    public PointOfInterestDTO likePOI(PointOfInterestDTO dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+
+        PointOfInterest poi = pointOfInterestRepository.findById(dto.getId()).get();
+        List<PointOfInterest> likedDestinations = user.getLikedPointOfInterests();
+        for (PointOfInterest likedPOI : likedDestinations) {
+            if (likedPOI.getId() == poi.getId()) {
+                return dto;
+            }
+        }
+
+        LikePointOfInterest likePOI = new LikePointOfInterest();
+        likePOI.setLikeTime(new Date());
+        likePOI.setRegisteredUser(user);
+        likePOI.setPointOfInterest(poi);
+
+        user.getLikedPointOfInterests().add(poi);
+        poi.getLikedBy().add(user);
+
+        pointOfInterestRepository.save(poi);
+        userRepository.save(user);
+        likePointOfInterestRepository.save(likePOI);
+
+
+        return dto;
+    }
+
+    public IsLikedDTO isLiked(PointOfInterestDTO dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        RegisteredUser user = (RegisteredUser) userRepository.findByEmail(currentPrincipalName);
+        IsLikedDTO likedDTO = new IsLikedDTO(false);
+
+        PointOfInterest poi = pointOfInterestRepository.findById(dto.getId()).get();
+        List<PointOfInterest> likedPOIs = user.getLikedPointOfInterests();
+        for (PointOfInterest likedPOI : likedPOIs) {
+            if (likedPOI.getId() == poi.getId()) {
+                likedDTO.setLiked(true);
+                break;
+            }
+        }
+
+        return likedDTO;
+    }
+
+    public List<PointOfInterestDTO> getTrending() {
+
+        List<PointOfInterestDTO> pointOfInterestDTOS = new ArrayList<>();
+
+        KieSession session = container.newKieSession(Constants.KIE_SESSION);
+        session.setGlobal("pointOfInterestDTOS", pointOfInterestDTOS);
+
+        List<LikePointOfInterest> likePointOfInterests = likePointOfInterestRepository.findAll();
+        List<PointOfInterest> pointOfInterests = pointOfInterestRepository.findByIsRemovedFalse();
+
+        for(PointOfInterest poi : pointOfInterests) {
+            session.insert(poi);
+        }
+
+        for(LikePointOfInterest likePointOfInterest : likePointOfInterests) {
+            session.insert(new PointOfInterestLikeEvent(likePointOfInterest.getLikeTime(), likePointOfInterest.getPointOfInterest()));
+        }
+
+
+        session.fireAllRules();
+        session.dispose();
+
+
+        return pointOfInterestDTOS;
+    }
 }

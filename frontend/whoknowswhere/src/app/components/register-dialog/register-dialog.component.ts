@@ -59,8 +59,8 @@ export class RegisterDialogComponent implements OnInit {
         label: 'Learning Something New'
       },
       {
-        value: 'SEEKING_NOVELTY',
-        label: 'Seeking Novelty'
+        value: 'SEEKING_FUN',
+        label: 'Seeking Fun'
       }],
       focused: false
     },

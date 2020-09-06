@@ -17,9 +17,25 @@ export class ViewPoiComponent implements OnInit {
   public selectedPOI: any = null;
   public pois: any[] = [];
 
+  public selects = {
+    category: {
+      value: null,
+      items: [{
+        value: 'DEFAULT',
+        label: 'Default'
+      },
+      {
+        value: 'TRENDING',
+        label: 'Trending'
+      }],
+      focused: false
+    }
+  };
+
   constructor(private poiService: PointOfInterestService) { }
 
   ngOnInit() {
+    this.selects.category.value = this.selects.category.items[0];
     this.poiService.getAllPOI().subscribe(
       data => {
         this.pois = data;
@@ -32,6 +48,38 @@ export class ViewPoiComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  itemChanged(event) {
+    if (event.value === 'TRENDING') {
+      this.poiService.getTrending().subscribe(
+        data => {
+          this.pois = data;
+          this.poiMarkers = this.pois.map((poi) => {
+            return poi.location;
+          });
+          console.log(this.pois);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+    else {
+      this.poiService.getAllPOI().subscribe(
+        data => {
+          this.pois = data;
+          this.poiMarkers = this.pois.map((poi) => {
+            return poi.location;
+          });
+          console.log(this.pois);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    }
+    
   }
 
   tablePOIClicked(item) {
@@ -50,7 +98,7 @@ export class ViewPoiComponent implements OnInit {
     console.log("dsa");
     this.poiService.removePOI(this.selectedPOI).subscribe(
       data => {
-        this.selectedPOI.isRemoved = true;
+        this.selectedPOI.removed = true;
         this.selectedPOI = this.selectedPOI;
         console.log(data);
       },
@@ -63,7 +111,7 @@ export class ViewPoiComponent implements OnInit {
   restorePOI() {
     this.poiService.restorePOI(this.selectedPOI).subscribe(
       data => {
-        this.selectedPOI.isRemoved = false;
+        this.selectedPOI.removed = false;
         this.selectedPOI = this.selectedPOI;
         console.log(data);
       },
@@ -74,5 +122,15 @@ export class ViewPoiComponent implements OnInit {
   }
 
 
+
+
+
+  focusSelect(event, obj) {
+    obj.focused = true;
+  }
+
+  blurSelect(event, obj) {
+    obj.focused = false;
+  }
 
 }

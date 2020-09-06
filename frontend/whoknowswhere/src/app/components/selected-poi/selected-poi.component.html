@@ -1,10 +1,11 @@
 <div class="row main-holder">
     <div class="col-12 destination-name">{{selectedPOI.poi.name}}</div>
-    <div class="col-6 destination-likes semi-bold">Total likes: {{selectedPOI.poi.likes}}</div>
     <div class="col-6 destination-type semi-bold">Type: {{selectedPOI.poi.type}}</div>
-    <div class="col-6 destination-distance semi-bold">Distance: {{getRoundedDistance()}}km</div>
-    <div class="col-6 destination-expense semi-bold">Estimated Price: {{getRoundedEstimatedPrice()}}$</div>
     <div class="col-12 destination-description-delimiter">Description:</div>
     <div class="col-12 destination-description">{{selectedPOI.poi.description}}</div>
+    <div class="col-12 col-md-12 search-field-holder">
+        <div *ngIf="!selectedPOI.isLiked" class="col-12 search-button" (click)="like()">Like</div>
+        <div *ngIf="selectedPOI.isLiked" class="col-12 search-button">Liked</div>
+    </div>
     
 </div>

@@ -1,0 +1,95 @@
+import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsResponseDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.RegisteredUser;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.DestinationType;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Motivation;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
+import com.WhoKnowsWhere.WhoKnowsWhere.model.PointOfInterest;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.DestinationLikeEvent;
+import com.WhoKnowsWhere.WhoKnowsWhere.events.PointOfInterestLikeEvent;
+import java.util.List;
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
+global List<PointOfInterestDTO> pointOfInterestDTOS;
+global List<DestinationDTO> destinationDTOS;
+
+rule "Check if destination is trending"
+    salience(100)
+    when
+        $recommendation: RecommendationDTO($dest: destination)
+        $event: DestinationLikeEvent($likeDestination : destination)
+        Destination(id == $dest.getId()) from $likeDestination
+        Number(intValue >= 2) from accumulate(
+            DestinationLikeEvent($dest.getId() == $likeDestination.getId()) over window:time(1h),
+            sum(1)
+        )
+    then
+        System.out.println("We have a trending destination");
+        modify($recommendation){
+            setTrending(true)
+        }
+end
+
+rule "Check if destination is trending for admin"
+    salience(100)
+    when
+        $dest: Destination()
+        $event: DestinationLikeEvent($likeDestination : destination)
+        Destination(id == $dest.getId()) from $likeDestination
+        Number(intValue >= 2) from accumulate(
+            DestinationLikeEvent($dest.getId() == $likeDestination.getId()) over window:time(1h),
+            sum(1)
+        )
+    then
+        System.out.println("We have a trending destination");
+        destinationDTOS.add(new DestinationDTO($dest));
+end
+
+
+
+rule "Check if poi is trending"
+    salience(100)
+    when
+        $recommendation: RecommendationDTO($poi: poi)
+        $event: PointOfInterestLikeEvent($likePOI : poi) over window:time(1h)
+        PointOfInterest(id == $poi.getId()) from $likePOI
+    then
+        System.out.println("We have a trending POI");
+        modify($recommendation){
+            setTrending(true)
+        }
+end
+
+rule "Check if poi is trending for admin"
+    salience(100)
+    when
+        $poi: PointOfInterest()
+        $event: PointOfInterestLikeEvent($likePOI : poi) over window:time(1h)
+        PointOfInterest(id == $poi.getId()) from $likePOI
+    then
+        System.out.println("We have a trending POI");
+        pointOfInterestDTOS.add(new PointOfInterestDTO($poi));
+end
+
+
+rule "Increase recommendation rank if it is trending"
+	no-loop
+	when
+		$recommendation: RecommendationDTO(isTrending() == true)
+	then
+		System.out.println("Increased rank by 10");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 10);
+		}
+end
+
+
+
+
+
+

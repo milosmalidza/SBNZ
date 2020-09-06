@@ -17,9 +17,25 @@ export class ViewDestinationsComponent implements OnInit {
   public selectedDestination: any = null;
   public destinations: any[] = [];
 
+  public selects = {
+    category: {
+      value: null,
+      items: [{
+        value: 'DEFAULT',
+        label: 'Default'
+      },
+      {
+        value: 'TRENDING',
+        label: 'Trending'
+      }],
+      focused: false
+    }
+  };
+
   constructor(private destinationService: DestinationService) { }
 
   ngOnInit() {
+    this.selects.category.value = this.selects.category.items[0];
     this.destinationService.getAllDestinations().subscribe(
       data => {
         this.destinations = data;
@@ -32,6 +48,38 @@ export class ViewDestinationsComponent implements OnInit {
         console.log(error);
       }
     )
+  }
+
+  itemChanged(event) {
+    if (event.value === 'TRENDING') {
+      this.destinationService.getTrending().subscribe(
+        data => {
+          this.destinations = data;
+          this.destinationMarkers = this.destinations.map((poi) => {
+            return poi.location;
+          });
+          console.log(this.destinations);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    }
+    else {
+      this.destinationService.getAllDestinations().subscribe(
+        data => {
+          this.destinations = data;
+          this.destinationMarkers = this.destinations.map((poi) => {
+            return poi.location;
+          });
+          console.log(this.destinations);
+        },
+        error => {
+          console.log(error);
+        }
+      )
+    }
+    
   }
 
   tableDestinationClicked(item) {
@@ -50,7 +98,7 @@ export class ViewDestinationsComponent implements OnInit {
     console.log("dsa");
     this.destinationService.removeDestination(this.selectedDestination).subscribe(
       data => {
-        this.selectedDestination.isRemoved = true;
+        this.selectedDestination.removed = true;
         this.selectedDestination = this.selectedDestination;
         console.log(data);
       },
@@ -63,7 +111,7 @@ export class ViewDestinationsComponent implements OnInit {
   restoreDestination() {
     this.destinationService.restoreDestination(this.selectedDestination).subscribe(
       data => {
-        this.selectedDestination.isRemoved = false;
+        this.selectedDestination.removed = false;
         this.selectedDestination = this.selectedDestination;
         console.log(data);
       },
@@ -74,5 +122,13 @@ export class ViewDestinationsComponent implements OnInit {
   }
 
 
+
+  focusSelect(event, obj) {
+    obj.focused = true;
+  }
+
+  blurSelect(event, obj) {
+    obj.focused = false;
+  }
 
 }

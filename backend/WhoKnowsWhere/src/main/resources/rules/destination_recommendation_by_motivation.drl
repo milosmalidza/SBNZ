@@ -57,13 +57,13 @@ rule "Increase recommendation rank destination type: Relaxation, motivation: ENJ
 	
 end
 
-rule "Increase recommendation rank destination type: Adventure, motivation: SEEKING_NOVELTY"
+rule "Increase recommendation rank destination type: Adventure, motivation: SEEKING_FUN"
 	no-loop
 	lock-on-active true
-	when 
+	when
 		$recommendation: RecommendationDTO($dest: destination)
-		DestinationDTO(type.contains(DestinationType.ADVENTURE)) from $dest
-		$user: RegisteredUser(motivation == Motivation.SEEKING_NOVELTY)
+		DestinationDTO(type.contains(DestinationType.URBAN)) from $dest
+		$user: RegisteredUser(motivation == Motivation.SEEKING_FUN)
 	then
 		System.out.println("Increased rank by 6");
 		modify($recommendation) {

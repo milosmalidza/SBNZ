@@ -13,6 +13,18 @@ export class PointOfInterestService {
     return this.http.post<any>('api/poi/recommendation', dto);
   }
 
+  getTrending(): Observable<any> {
+    return this.http.get<any>('api/poi/trending');
+  }
+
+  likePOI(poi: any): Observable<any> {
+    return this.http.post<any>('api/poi/like', poi);
+  }
+
+  isLikedPOI(poi: any): Observable<any> {
+    return this.http.post<any>('api/poi/is-liked', poi);
+  }
+
   createPOI(dto: any): Observable<any> {
     return this.http.post<any>('api/poi/create-poi', dto);
   }
