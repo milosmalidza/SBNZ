@@ -9,6 +9,10 @@ export class PointOfInterestService {
 
   constructor(private http: HttpClient) { }
 
+  getRecommendedPOI(dto: any): Observable<any> {
+    return this.http.post<any>('api/poi/recommendation', dto);
+  }
+
   createPOI(dto: any): Observable<any> {
     return this.http.post<any>('api/poi/create-poi', dto);
   }

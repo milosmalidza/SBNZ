@@ -1,6 +1,7 @@
 <div class="register-dialog-component" [ngClass]="{'activated' : activated}">
     <div class="header-holder">
-        <div class="register-dialog-header">Register</div>
+        <div *ngIf="!user" class="register-dialog-header">Register</div>
+        <div *ngIf="user" class="register-dialog-header">Your Profile</div>
     </div>
 
     <div class="register-item p-4">
@@ -54,7 +55,7 @@
 
                 <div class="col-12 p-1"></div>
 
-                <div class="input-holder d-flex align-items-center col-6" 
+                <div *ngIf="!user" class="input-holder d-flex align-items-center col-6" 
                     [ngClass]="{blurred : isBlurred(password), 
                     focused : isFocused(password) || 
                     !isEmpty(password)}">
@@ -66,7 +67,7 @@
                         #password="ngModel" data-index="3">
                 </div>
 
-                <div class="input-holder d-flex align-items-center col-6" 
+                <div *ngIf="!user" class="input-holder d-flex align-items-center col-6" 
                     [ngClass]="{blurred : isBlurred(confirmPassword), 
                     focused : isFocused(confirmPassword) || 
                     !isEmpty(confirmPassword)}">
@@ -166,8 +167,11 @@
 
                 <div class="col-12 p-1"></div>
 
-                <div class="col-12 p-3 register-button" (click)="register()">
+                <div *ngIf="!user" class="col-12 p-3 register-button" (click)="register()">
                     Register
+                </div>
+                <div *ngIf="user" class="col-12 p-3 register-button" (click)="changeProfile()">
+                    Change Profile
                 </div>
 
             </div>

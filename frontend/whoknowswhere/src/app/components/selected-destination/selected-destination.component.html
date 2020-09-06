@@ -64,4 +64,25 @@
         <div class="col-12 search-button" (click)="search()">Search</div>
     </div>
 
+    
+
+</div>
+<div class="col-12 result-holder info">
+    <div>These POI's might be suitable for you</div>
+</div>
+<div class="col-12 result-holder">
+    <table class="main-results">
+        <tr>
+            <td>Rank</td>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Points</td>
+        </tr>
+        <tr *ngFor="let item of pois; let i = index" (click)="tablePOIClicked(item)" class="destination-item">
+            <td>{{i + 1}}</td>
+            <td>{{item.poi.name}}</td>
+            <td>{{item.poi.type}}</td>
+            <td>{{item.rank}}</td>
+        </tr>
+    </table>
 </div>

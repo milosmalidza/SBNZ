@@ -2,6 +2,8 @@ package com.WhoKnowsWhere.WhoKnowsWhere.service;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Destination;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.Location;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.PointOfInterest;
@@ -12,6 +14,8 @@ import org.kie.api.runtime.KieContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,6 +30,17 @@ public class PointOfInterestService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public List<RecommendationDTO> getRecommendedPOI(RecommendationsRequestDTO rrDTO) {
+
+        List<PointOfInterest> pois = pointOfInterestRepository.findAll();
+        List<RecommendationDTO> recommendations = new ArrayList<>();
+        for (PointOfInterest poi : pois) {
+            recommendations.add(new RecommendationDTO(poi));
+        }
+
+        return recommendations;
+    }
 
     public PointOfInterestDTO createPointOfInterest(PointOfInterestDTO dto) {
         PointOfInterest poi = new PointOfInterest();
@@ -62,5 +77,6 @@ public class PointOfInterestService {
         pointOfInterestRepository.save(poi);
         return dto;
     }
+
 
 }

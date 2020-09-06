@@ -2,6 +2,8 @@ package com.WhoKnowsWhere.WhoKnowsWhere.controller;
 
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.DestinationDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.PointOfInterestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.service.PointOfInterestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,12 @@ public class PointOfInterestController {
 
     @Autowired
     private PointOfInterestService pointOfInterestService;
+
+    @Secured({"ROLE_USER"})
+    @PostMapping("/recommendation")
+    public ResponseEntity<List<RecommendationDTO>> getRecommendation(@RequestBody RecommendationsRequestDTO rrDTO) {
+        return new ResponseEntity<>(pointOfInterestService.getRecommendedPOI(rrDTO), HttpStatus.OK);
+    }
 
     @Secured({"ROLE_ADMIN"})
     @PostMapping("create-poi")

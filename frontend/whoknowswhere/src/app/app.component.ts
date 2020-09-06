@@ -107,6 +107,15 @@ export class AppComponent {
     );
   }
 
+  openMyProfile(): void {
+    this.registerDialogService.sendData(
+      {
+        isOpened: true,
+        user: this.authenticationService.getCurrentUser()
+      }
+    );
+  }
+
   closeLoginDialog(): void {
     this.loginDialogService.sendData({
       isOpened: false

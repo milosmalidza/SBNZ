@@ -3,6 +3,7 @@ package com.WhoKnowsWhere.WhoKnowsWhere.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,12 @@ public class AuthenticationController {
 	@PostMapping("/register")
 	public ResponseEntity<UserDTO> register(@Valid @RequestBody UserDTO userDTO) {
 		return new ResponseEntity<>(authService.register(userDTO), HttpStatus.OK);
+	}
+
+	@Secured({"ROLE_USER"})
+	@PostMapping("/change-profile")
+	public ResponseEntity<UserDTO> changeProfile(@RequestBody UserDTO userDTO) {
+		return new ResponseEntity<>(authService.changeProfile(userDTO), HttpStatus.OK);
 	}
 
 

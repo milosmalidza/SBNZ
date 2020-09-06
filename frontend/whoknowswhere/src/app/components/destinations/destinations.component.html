@@ -4,6 +4,9 @@
         <div class="close-selected-destination" [ngClass]="{selected : selectedDestination}" (click)="closeSelectedDestination()">
             <div><fa-icon [icon]="faTimes"></fa-icon></div>
         </div>
+        <div class="close-selected-destination" [ngClass]="{selected : selectedPOI}" (click)="closeSelectedPOI()">
+            <div><fa-icon [icon]="faTimes"></fa-icon></div>
+        </div>
     </div>
     <div class="explore-holder col-12 col-md-5">
         
@@ -129,8 +132,11 @@
                 </table>
             </div>
         </div>
-        <div class="selected-destination" *ngIf="selectedDestination">
-            <app-selected-destination [selectedDestination]="selectedDestination"></app-selected-destination>
+        <div class="selected-destination" *ngIf="selectedDestination && !selectedPOI">
+            <app-selected-destination [selectedDestination]="selectedDestination" (poiClicked)="tablePOIClicked($event)"></app-selected-destination>
+        </div>
+        <div class="selected-destination" *ngIf="selectedPOI">
+            <app-selected-poi [selectedPOI]="selectedPOI"></app-selected-poi>
         </div>
     </div>
     

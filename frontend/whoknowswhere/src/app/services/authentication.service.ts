@@ -23,6 +23,10 @@ export class AuthenticationService {
     return this.http.post('api/auth/register', user);
   }
 
+  changeProfileRequest(user: any) {
+    return this.http.post('api/auth/change-profile', user);
+  }
+
   login(user: any) {
     localStorage.setItem(environment.user, user);
   }

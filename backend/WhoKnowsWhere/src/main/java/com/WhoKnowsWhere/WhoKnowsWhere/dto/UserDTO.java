@@ -40,6 +40,10 @@ public class UserDTO {
 
 	private String birthDate;
 
+	private int day;
+	private int month;
+	private int year;
+
 	private LocationDTO locationDTO;
 	
 	private String token;

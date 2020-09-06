@@ -23,6 +23,7 @@ import com.WhoKnowsWhere.WhoKnowsWhere.security.JwtUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -70,7 +71,16 @@ public class AuthenticationService {
 			LocationDTO locDTO = new LocationDTO(((RegisteredUser) ur).getLocation());
 			locDTO.setGResult(locationService.retreiveLocationInfo(locDTO));
 			user.setLocationDTO(locDTO);
+			RegisteredUser ruser = (RegisteredUser) ur;
+			user.setMotivation(ruser.getMotivation().toString());
+			user.setUserStatus(ruser.getUserStatus().toString());
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(ruser.getBirthDate());
+			user.setDay(cal.get(Calendar.DAY_OF_MONTH));
+			user.setMonth(cal.get(Calendar.MONTH));
+			user.setYear(cal.get(Calendar.YEAR));
 		}
+
 		user.setToken(token);
 		return user;
 	}
@@ -104,4 +114,30 @@ public class AuthenticationService {
 	}
 
 
+	public UserDTO changeProfile(UserDTO userDTO) {
+		RegisteredUser ruser = (RegisteredUser) userRepo.findByEmail(userDTO.getEmail());
+		ruser.setFirstname(userDTO.getFirstname());
+		ruser.setLastname(userDTO.getLastname());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			ruser.setBirthDate(sdf.parse(userDTO.getBirthDate()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		ruser.setMotivation(Motivation.valueOf(userDTO.getMotivation()));
+		ruser.setUserStatus(UserStatus.valueOf(userDTO.getUserStatus()));
+		Location location = new Location();
+		location.setLongitude(userDTO.getLocationDTO().getLongitude());
+		location.setLatitude(userDTO.getLocationDTO().getLatitude());
+		location.setCountry(userDTO.getLocationDTO().getCountry());
+		ruser.setLocation(location);
+		userRepo.save(ruser);
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(ruser.getBirthDate());
+		userDTO.setDay(cal.get(Calendar.DAY_OF_MONTH));
+		userDTO.setMonth(cal.get(Calendar.MONTH));
+		userDTO.setYear(cal.get(Calendar.YEAR));
+		return userDTO;
+	}
 }

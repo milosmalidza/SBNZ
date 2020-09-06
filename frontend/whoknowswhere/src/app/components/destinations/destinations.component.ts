@@ -27,6 +27,7 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   };
   public result: any[] = [];
   public selectedDestination = null;
+  public selectedPOI = null;
 
   map: mapboxgl.Map;
   style = 'mapbox://styles/malidzo/ckc3v25ez03xg1ipjk4f34zl8';
@@ -299,6 +300,26 @@ export class DestinationsComponent implements OnInit, OnDestroy {
   }
 
 
+  tablePOIClicked(item) {
+    this.selectedPOI = item;
+    this.map.flyTo({
+      center: new mapboxgl.LngLat(this.selectedPOI.poi.location.longitude, this.selectedPOI.poi.location.latitude),
+      zoom: 9,
+      bearing: 0,
+      
+      // These options control the flight curve, making it move
+      // slowly and zoom out almost completely before starting
+      // to pan.
+      speed: 1, // make the flying slow
+      curve: 2, // change the speed at which it zooms out
+      essential: true // this animation is considered essential with respect to prefers-reduced-motion
+      });
+  }
+
+  closeSelectedPOI() {
+    this.selectedPOI = null;
+    this.tableDestinationClicked(this.selectedDestination);
+  }
 
 
 

@@ -21,6 +21,7 @@ import { ViewPoiComponent } from './components/admin-panel/view-poi/view-poi.com
 import { CreateDestinationComponent } from './components/admin-panel/create-destination/create-destination.component';
 import { CreatePoiComponent } from './components/admin-panel/create-poi/create-poi.component';
 import { AdminMapComponent } from './components/admin-map/admin-map.component';
+import { SelectedPoiComponent } from './components/selected-poi/selected-poi.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { AdminMapComponent } from './components/admin-map/admin-map.component';
     ViewPoiComponent,
     CreateDestinationComponent,
     CreatePoiComponent,
-    AdminMapComponent
+    AdminMapComponent,
+    SelectedPoiComponent
   ],
   imports: [
     BrowserModule,

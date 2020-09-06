@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Point } from 'mapbox-gl';
+import { PointOfInterestService } from 'src/app/services/point-of-interest.service';
+import { error } from 'protractor';
 
 @Component({
   selector: 'app-selected-destination',
@@ -8,11 +11,14 @@ import { Component, OnInit, Input } from '@angular/core';
 export class SelectedDestinationComponent implements OnInit {
 
   @Input() selectedDestination;
+  @Output() poiClicked = new EventEmitter<any>();
 
   public activeInput = -1;
   public poiSearchDTO: any = {};
 
-  constructor() { }
+  public pois: any[] = [];
+
+  constructor(private pointOfInterestService: PointOfInterestService) { }
 
   ngOnInit() {
   }
@@ -34,8 +40,19 @@ export class SelectedDestinationComponent implements OnInit {
 
   }
 
+  tablePOIClicked(item) {
+    this.poiClicked.emit(item);
+  }
+
   search() {
-    
+    this.pointOfInterestService.getRecommendedPOI(this.poiSearchDTO).subscribe(
+      data => {
+        this.pois = data;
+      },
+      error => {
+
+      }
+    )
   }
 
 
