@@ -24,3 +24,18 @@ rule "Increase recommendation rank poi type: Forest, status: RETIRED"
 		}
 
 end
+
+rule "Increase recommendation rank poi type: Club, status: STUDENT"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.CLUB) from $poi
+		$user: RegisteredUser(userStatus == UserStatus.STUDENT)
+	then
+		System.out.println("Increased rank by 6");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 6);
+		}
+
+end
