@@ -51,8 +51,9 @@ rule "Increase rank with expense"
 	no-loop
 	when
 	    $recommendation: RecommendationDTO($dest: destination)
-		$expense: ExpenseDTO(estimatedPrice > recommendationsRequestDTO.desireableExpense - 100 && estimatedPrice < recommendationsRequestDTO.desireableExpense + 100)
+		$expense: ExpenseDTO(estimatedPrice > recommendationsRequestDTO.desireableExpense - 100 && estimatedPrice < recommendationsRequestDTO.desireableExpense + 100 && $recommendation.getExpense() == this)
 	then
+	    System.out.println("Increased rank by desireable expense");
 		modify($recommendation) {
 			setRank($recommendation.getRank() + 15)
 		}
