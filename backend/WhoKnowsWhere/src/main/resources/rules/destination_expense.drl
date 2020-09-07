@@ -1,6 +1,10 @@
 
 import com.WhoKnowsWhere.WhoKnowsWhere.dto.ExpenseDTO;
 import com.WhoKnowsWhere.WhoKnowsWhere.model.TravelMethod;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationsRequestDTO;
+import com.WhoKnowsWhere.WhoKnowsWhere.dto.RecommendationDTO;
+
+global RecommendationsRequestDTO recommendationsRequestDTO;
 
 rule "Set expense linearly with distance when traveling with Car"
 	no-loop
@@ -39,4 +43,18 @@ rule "Set expense linearly with distance when traveling with Plane"
 			setEstimatedTime($expense.getDistance() * 0.15);
 		}
 	
+end
+
+
+rule "Increase rank with expense"
+    salience(-100)
+	no-loop
+	when
+	    $recommendation: RecommendationDTO($dest: destination)
+		$expense: ExpenseDTO(estimatedPrice > recommendationsRequestDTO.desireableExpense - 100 && estimatedPrice < recommendationsRequestDTO.desireableExpense + 100)
+	then
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 15)
+		}
+
 end
