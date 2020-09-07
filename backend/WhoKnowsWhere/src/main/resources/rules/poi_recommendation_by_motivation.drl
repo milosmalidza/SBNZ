@@ -26,3 +26,19 @@ rule "Increase recommendation rank poi type: Club, motivation: SEEKING_FUN"
 		}
 
 end
+
+
+rule "Increase recommendation rank poi type: Forest, motivation: ENJOYING_NATURE"
+	no-loop
+	lock-on-active true
+	when
+		$recommendation: RecommendationDTO($poi: poi)
+		PointOfInterestDTO(type == POIType.FOREST) from $poi
+		$user: RegisteredUser(motivation == Motivation.ENJOYING_NATURE)
+	then
+		System.out.println("Increased rank by 6");
+		modify($recommendation) {
+			setRank($recommendation.getRank() + 6);
+		}
+
+end
