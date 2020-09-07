@@ -33,7 +33,7 @@
                     focused : isFocused(password) || 
                     !isEmpty(password)}">
                     <p class="input-text-value">Password:</p>
-                    <input type="text" class="input-styled" autocomplete="off"
+                    <input type="password" class="input-styled" autocomplete="off"
                     (blur)="blurInput($event, password)" 
                     (focus)="focusInput($event, password)"
                         [(ngModel)]="loginDTO.password" name="password"
