@@ -39,7 +39,7 @@
     "ng2-charts": "^2.3.2",
     "open-iconic": "^1.1.1",
     "rxjs": "~6.4.0",
-    "three": "^0.108.0",
+    "three": "^0.137.0",
     "three-effectcomposer": "0.0.1",
     "three-effectcomposer-es6": "0.0.4",
     "three-fbx-loader": "^1.0.3",
