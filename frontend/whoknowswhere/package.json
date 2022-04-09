@@ -35,7 +35,7 @@
     "chart.js": "^2.9.3",
     "file-saver": "^2.0.2",
     "mapbox-gl": "^1.11.0",
-    "moment": "2.24.0",
+    "moment": "2.29.2",
     "ng2-charts": "^2.3.2",
     "open-iconic": "^1.1.1",
     "rxjs": "~6.4.0",
